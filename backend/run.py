@@ -7,14 +7,15 @@ Run with:
 import sys
 from pathlib import Path
 
-# Ensure project root is on sys.path so 'backend' is importable
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
-
 import uvicorn
+from backend.server import app  # noqa: F401  — re-exported for uvicorn backend.run:app
 
 if __name__ == "__main__":
+    # Ensure project root is on sys.path so uvicorn resolves backend.server:app
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent
+    if str(PROJECT_ROOT) not in sys.path:
+        sys.path.insert(0, str(PROJECT_ROOT))
+
     uvicorn.run(
         "backend.server:app",
         host="0.0.0.0",
