@@ -1,0 +1,30 @@
+# 1st 4 Mobile — FREE33 Telecom Billing Audit Pipeline
+# Python 3.11+
+
+# Core data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# CSV/Excel parsing
+openpyxl>=3.1.0
+
+# PDF parsing
+pdfplumber>=0.10.0
+camelot-py[cv]>=0.11.0
+
+# OCR fallback (image-based PDFs)
+pytesseract>=0.3.10
+
+# Configuration
+pyyaml>=6.0
+
+# Output templating
+jinja2>=3.1.0
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Utilities
+python-dateutil>=2.8.0
+thefuzz[speedup]>=0.22.0

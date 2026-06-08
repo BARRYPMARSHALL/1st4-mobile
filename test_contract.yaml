@@ -1,0 +1,91 @@
+# 1st 4 Mobile — Sample Contract Matrix for Testing
+# This is a synthetic contract for test/development use only.
+
+client:
+  name: "TestCo Mining Services Pty Ltd"
+  account_numbers:
+    telstra: ["999999001", "999999002"]
+    optus: []
+
+contract:
+  effective_date: "2024-01-01"
+  expiry_date: "2026-12-31"
+  auto_renew: true
+  notice_period_days: 90
+
+rate_plans:
+  - plan_code: "MBP-50GB-POOL"
+    plan_name: "Mobile Business Pool 50GB"
+    service_type: mobile
+    monthly_access_fee: 45.00
+    data_pool:
+      included: 51200
+      overage_rate: 0.002
+    voice: "unlimited_national"
+    sms: "unlimited"
+    contract_term_months: 24
+
+  - plan_code: "MBP-200GB-POOL"
+    plan_name: "Mobile Business Pool 200GB"
+    service_type: mobile
+    monthly_access_fee: 85.00
+    data_pool:
+      included: 204800
+      overage_rate: 0.0015
+    voice: "unlimited_national"
+    sms: "unlimited"
+    contract_term_months: 24
+
+  - plan_code: "IOT-1GB"
+    plan_name: "IoT Standard 1GB"
+    service_type: iot
+    monthly_access_fee: 12.00
+    data_pool:
+      included: 1024
+      overage_rate: 0.005
+    contract_term_months: 36
+
+  - plan_code: "SAT-VOICE-30"
+    plan_name: "Satellite Voice 30min"
+    service_type: satellite
+    monthly_access_fee: 35.00
+    voice_included: 30
+    overage_voice_rate: 1.50
+    contract_term_months: 12
+
+discounts:
+  - name: "Volume Discount Tier 2"
+    type: percentage
+    value: 15.0
+    applies_to: ["MBP-50GB-POOL", "MBP-200GB-POOL"]
+    condition: "total_sims >= 250"
+
+  - name: "Loyalty Discount"
+    type: percentage
+    value: 5.0
+    applies_to: ["*"]
+    condition: "contract_years >= 3"
+
+pool_configuration:
+  - pool_name: "Corporate Data Pool"
+    pool_id: "POOL-A7X"
+    total_included_gb: 500
+    participating_plans: ["MBP-50GB-POOL", "MBP-200GB-POOL"]
+    overage_billing: "shared"
+    overage_rate: 0.0015
+
+roaming_zones:
+  - zone: "Zone 1 (NZ, US, UK, Canada)"
+    data_rate: 0.00
+    voice_rate: 0.50
+    sms_rate: 0.00
+
+  - zone: "Zone 2 (Asia)"
+    data_rate: 0.01
+    voice_rate: 1.00
+    sms_rate: 0.50
+
+  - zone: "Zone 3 (Rest of World)"
+    data_rate: 0.02
+    voice_rate: 2.50
+    sms_rate: 1.00

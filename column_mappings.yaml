@@ -1,0 +1,146 @@
+# 1st 4 Mobile — Column Mapping Registry
+# Maps known column name variations to canonical schema fields.
+
+telstra_patterns:
+  - provider: telstra
+    patterns:
+      account_number:
+        - "Account Number"
+        - "Account #"
+        - "Billing Account"
+        - "Inv Account"
+        - "Customer Account"
+      service_id:
+        - "Service ID"
+        - "Mobile Number"
+        - "SIM"
+        - "ICCID"
+        - "Device ID"
+        - "Phone Number"
+        - "MSISDN"
+      service_type:
+        - "Service Type"
+        - "Type"
+        - "Category"
+        - "Product Type"
+      charge_description:
+        - "Description"
+        - "Charge Description"
+        - "Item"
+        - "Details"
+        - "Charge Item"
+      charge_amount:
+        - "Amount"
+        - "Charge"
+        - "Total Charge"
+        - "Net Amount"
+        - "Ex GST"
+        - "Charge Amount"
+      usage_units:
+        - "Usage"
+        - "Usage (MB)"
+        - "Data Usage"
+        - "Voice Minutes"
+        - "SMS Count"
+        - "Total Usage"
+      rate_per_unit:
+        - "Rate"
+        - "Unit Rate"
+        - "Per Unit"
+        - "Charge per Unit"
+        - "Rate per Unit"
+      plan_code:
+        - "Plan Code"
+        - "Rate Code"
+        - "Product Code"
+        - "Offer Code"
+      plan_name:
+        - "Plan Name"
+        - "Rate Plan"
+        - "Product Name"
+        - "Offer Name"
+      charge_period_start:
+        - "Period Start"
+        - "Start Date"
+        - "From Date"
+        - "Service From"
+      charge_period_end:
+        - "Period End"
+        - "End Date"
+        - "To Date"
+        - "Service To"
+      invoice_number:
+        - "Invoice #"
+        - "Invoice Reference"
+        - "Bill Number"
+        - "Invoice No"
+      billed_quantity:
+        - "Qty"
+        - "Quantity"
+        - "Units"
+        - "Count"
+      billed_rate:
+        - "Billed Rate"
+        - "Actual Rate"
+        - "Invoice Rate"
+        - "Applied Rate"
+
+optus_patterns:
+  - provider: optus
+    patterns:
+      account_number:
+        - "Account"
+        - "Billing Account"
+        - "Customer Number"
+        - "Account #"
+      service_id:
+        - "Mobile Number"
+        - "Service ID"
+        - "MSISDN"
+        - "SIM ID"
+        - "Service Number"
+      service_type:
+        - "Service"
+        - "Type"
+        - "Category"
+        - "Service Type"
+      charge_description:
+        - "Description"
+        - "Details"
+        - "Charge Item"
+        - "Item Description"
+      charge_amount:
+        - "Amount ($)"
+        - "Charge"
+        - "Total"
+        - "Inc GST"
+        - "Charge Amount"
+      usage_units:
+        - "Usage (MB)"
+        - "Data Usage"
+        - "Voice (min)"
+        - "SMS"
+        - "Usage Amount"
+      rate_per_unit:
+        - "Rate"
+        - "Price/Unit"
+        - "Unit Price"
+      plan_code:
+        - "Product Code"
+        - "Plan ID"
+        - "Rate Code"
+      plan_name:
+        - "Plan"
+        - "Rate Plan"
+        - "Product"
+        - "Product Name"
+      charge_period_start:
+        - "From"
+        - "Start"
+        - "Period From"
+        - "Service Start"
+      charge_period_end:
+        - "To"
+        - "End"
+        - "Period To"
+        - "Service End"

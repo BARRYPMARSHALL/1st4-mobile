@@ -1,0 +1,44 @@
+# 1st 4 Mobile — Telstra/Optus Standard Rack Rates Reference
+# Used for legacy rollback detection and unknown plan comparison.
+# Prices are GST-exclusive per month. Updated June 2026.
+
+telstra:
+  mobile_plans:
+    "Mobile Business Plan 5GB": {monthly: 55.00, data_gb: 5}
+    "Mobile Business Plan 10GB": {monthly: 65.00, data_gb: 10}
+    "Mobile Business Plan 30GB": {monthly: 85.00, data_gb: 30}
+    "Mobile Business Plan 50GB": {monthly: 105.00, data_gb: 50}
+    "Mobile Business Plan 100GB": {monthly: 145.00, data_gb: 100}
+    "Mobile Business Plan Unlimited": {monthly: 195.00, data_gb: null}
+    "Mobile Business Plan 500GB": {monthly: 275.00, data_gb: 500}
+  data_plans:
+    "Business Data 5GB": {monthly: 35.00, data_gb: 5}
+    "Business Data 20GB": {monthly: 75.00, data_gb: 20}
+    "Business Data 50GB": {monthly: 120.00, data_gb: 50}
+    "Business Data 200GB": {monthly: 280.00, data_gb: 200}
+    "Business Data 500GB": {monthly: 450.00, data_gb: 500}
+  iot_plans:
+    "IoT Standard 500MB": {monthly: 15.00, data_mb: 500}
+    "IoT Standard 1GB": {monthly: 22.00, data_mb: 1024}
+    "IoT Standard 5GB": {monthly: 55.00, data_mb: 5120}
+    "IoT Critical 1GB": {monthly: 35.00, data_mb: 1024}
+  satellite_plans:
+    "Satellite Voice 30min": {monthly: 49.00, voice_minutes: 30}
+    "Satellite Data 1GB": {monthly: 89.00, data_mb: 1024}
+
+optus:
+  mobile_plans:
+    "Business Everyday 5GB": {monthly: 45.00, data_gb: 5}
+    "Business Everyday 10GB": {monthly: 58.00, data_gb: 10}
+    "Business Everyday 30GB": {monthly: 72.00, data_gb: 30}
+    "Business Everyday 50GB": {monthly: 88.00, data_gb: 50}
+    "Business Everyday 120GB": {monthly: 125.00, data_gb: 120}
+    "Business Everyday Unlimited": {monthly: 165.00, data_gb: null}
+  data_plans:
+    "Business Data 10GB": {monthly: 38.00, data_gb: 10}
+    "Business Data 50GB": {monthly: 110.00, data_gb: 50}
+    "Business Data 200GB": {monthly: 250.00, data_gb: 200}
+  iot_plans:
+    "IoT Starter 250MB": {monthly: 10.00, data_mb: 250}
+    "IoT Standard 1GB": {monthly: 20.00, data_mb: 1024}
+    "IoT Pro 5GB": {monthly: 50.00, data_mb: 5120}
