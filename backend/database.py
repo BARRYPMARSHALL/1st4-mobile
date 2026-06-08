@@ -16,15 +16,38 @@ from sqlalchemy.orm import DeclarativeBase
 
 logger = logging.getLogger("1st4backend.database")
 
-import os
-from pathlib import Path
+# ── Database URL resolution ────────────────────────────────────
+# Railway Postgres plugin can surface the connection as either:
+#   1. A single DATABASE_URL env var (most common)
+#   2. Individual PG* vars (PGHOST, PGPORT, PGUSER, PGPASSWORD, PGDATABASE)
+#
+# The DATABASE_URL from Railway has the form:
+#   postgresql://user:pass@host:5432/dbname
+# but SQLAlchemy async mode needs +asyncpg injected into the scheme.
+# ────────────────────────────────────────────────────────────────
 
-# Railway provides DATABASE_URL via Postgres plugin.
-# Fall back to local dev database if not set.
-DATABASE_URL = os.environ.get(
-    "DATABASE_URL",
-    "postgresql+asyncpg://free33@localhost:5432/first4mobile"
-)
+_raw_url = os.environ.get("DATABASE_URL")
+
+if _raw_url:
+    # Railway does NOT include +asyncpg — inject it so SQLAlchemy
+    # uses the async driver instead of the sync psycopg2 one.
+    if _raw_url.startswith("postgresql://"):
+        _raw_url = _raw_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    elif _raw_url.startswith("postgres://"):
+        _raw_url = _raw_url.replace("postgres://", "postgresql+asyncpg://", 1)
+    DATABASE_URL = _raw_url
+elif os.environ.get("PGHOST"):
+    # Fall back to individual PG* vars (alternative Railway layout)
+    DATABASE_URL = (
+        f"postgresql+asyncpg://{os.environ['PGUSER']}:{os.environ['PGPASSWORD']}"
+        f"@{os.environ['PGHOST']}:{os.environ.get('PGPORT', '5432')}"
+        f"/{os.environ['PGDATABASE']}"
+    )
+else:
+    # Local dev fallback
+    DATABASE_URL = "postgresql+asyncpg://free33@localhost:5432/first4mobile"
+
+logger.info("DATABASE_URL scheme: %s", DATABASE_URL.split("://")[0])
 
 engine = create_async_engine(DATABASE_URL, echo=False, pool_pre_ping=True)
 
