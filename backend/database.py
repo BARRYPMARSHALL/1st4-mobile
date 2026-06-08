@@ -13,7 +13,15 @@ from sqlalchemy.orm import DeclarativeBase
 
 logger = logging.getLogger("1st4backend.database")
 
-DATABASE_URL = "postgresql+asyncpg://free33@localhost:5432/first4mobile"
+import os
+from pathlib import Path
+
+# Railway provides DATABASE_URL via Postgres plugin.
+# Fall back to local dev database if not set.
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    "postgresql+asyncpg://free33@localhost:5432/first4mobile"
+)
 
 engine = create_async_engine(DATABASE_URL, echo=False, pool_pre_ping=True)
 
