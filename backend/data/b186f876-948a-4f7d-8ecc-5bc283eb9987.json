@@ -1,0 +1,14 @@
+{
+  "client_id": "b186f876-948a-4f7d-8ecc-5bc283eb9987",
+  "company_name": "TestCo Mining",
+  "abn": "12 345 678 901",
+  "industry": "Mining",
+  "fleet_size": 500,
+  "primary_carrier": "Telstra",
+  "email": "cfo@testco.com.au",
+  "authorized": true,
+  "signed_by": "John Smith, CFO",
+  "has_results": false,
+  "created_at": "2026-06-08T04:24:23.371459Z",
+  "authorized_at": "2026-06-08T04:24:23.373748Z"
+}

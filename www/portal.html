@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Portal — 1st 4 Mobile</title>
+    <meta name="description" content="Onboard with 1st 4 Mobile. Secure data upload, digital signature, and audit initiation." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --navy:#0a1628;
+            --navy-light:#111e35;
+            --blue:#2563eb;
+            --blue-hover:#1d4ed8;
+            --blue-glow:rgba(37,99,235,0.25);
+            --white:#ffffff;
+            --green:#10b981;
+            --red:#ef4444;
+            --gray-50:#f8fafc;
+            --gray-100:#f1f5f9;
+            --gray-200:#e2e8f0;
+            --gray-300:#cbd5e1;
+            --gray-400:#94a3b8;
+            --gray-500:#64748b;
+            --gray-600:#475569;
+            --gray-700:#334155;
+            --gray-800:#1e293b;
+            --gray-900:#0f172a;
+            --radius:12px;
+            --radius-sm:8px;
+            --radius-lg:16px;
+            --shadow:0 4px 24px rgba(0,0,0,0.08);
+            --shadow-lg:0 12px 48px rgba(0,0,0,0.12);
+            --transition:200ms cubic-bezier(0.4,0,0.2,1);
+        }
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+        .container{max-width:880px;margin:0 auto;padding:0 24px}
+
+        /* Header */
+        .portal-header{background:var(--navy);padding:16px 0;position:sticky;top:0;z-index:50}
+        .portal-header-inner{display:flex;align-items:center;justify-content:space-between}
+        .portal-logo{display:flex;align-items:center;gap:10px;color:var(--white);font-weight:800;font-size:1.1rem;letter-spacing:-0.02em}
+        .portal-logo .mark{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;color:var(--white)}
+        .portal-header-right{display:flex;align-items:center;gap:16px;font-size:0.85rem;color:rgba(255,255,255,0.6)}
+        .portal-header-right .badge{padding:4px 12px;background:rgba(255,255,255,0.08);border-radius:100px;font-weight:500;color:var(--white)}
+        .logout-btn{background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.65);padding:6px 16px;border-radius:6px;cursor:pointer;font-size:0.82rem;font-family:inherit;transition:all var(--transition)}
+        .logout-btn:hover{border-color:rgba(255,255,255,0.3);color:var(--white)}
+
+        /* Progress Bar */
+        .progress-section{padding:28px 0 20px;background:var(--white);border-bottom:1px solid var(--gray-200)}
+        .progress-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+        .progress-label{font-weight:600;font-size:0.9rem;color:var(--gray-700)}
+        .progress-pct{font-weight:700;font-size:0.9rem;color:var(--blue)}
+        .progress-track{height:6px;background:var(--gray-100);border-radius:3px;overflow:hidden}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:3px;transition:width 0.6s ease}
+        .step-indicators{display:flex;gap:8px;margin-top:16px}
+        .step-dot{flex:1;text-align:center;font-size:0.78rem;font-weight:500;color:var(--gray-400);padding:8px 0;border-radius:6px;background:var(--gray-50);transition:all var(--transition);position:relative;cursor:default}
+        .step-dot.active{background:var(--blue);color:var(--white)}
+        .step-dot.done{background:var(--green);color:var(--white)}
+
+        /* Card */
+        .card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--gray-200);padding:40px;box-shadow:var(--shadow);margin-top:32px;margin-bottom:48px}
+        .card-title{font-size:1.35rem;font-weight:700;color:var(--navy);margin-bottom:4px}
+        .card-subtitle{color:var(--gray-500);font-size:0.9rem;margin-bottom:28px}
+
+        /* Form */
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+        .form-group{display:flex;flex-direction:column;gap:6px}
+        .form-group.full{grid-column:1/-1}
+        label{font-size:0.85rem;font-weight:600;color:var(--gray-700)}
+        .input,.select{font-family:inherit;padding:12px 16px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:0.9rem;color:var(--gray-800);background:var(--white);transition:border-color var(--transition);outline:none;width:100%}
+        .input:focus,.select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
+        .select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+        .input-error{border-color:var(--red)}
+        .error-text{color:var(--red);font-size:0.78rem;font-weight:500;display:none}
+        .error-text.show{display:block}
+
+        /* Signature */
+        .signature-area{background:var(--white);border:2px dashed var(--gray-300);border-radius:var(--radius);padding:24px;text-align:center;margin-top:16px}
+        .signature-area.active{border-style:solid;border-color:var(--blue)}
+        canvas#sigPad{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-sm);width:100%;height:200px;cursor:crosshair;touch-action:none}
+        .sig-tools{display:flex;gap:12px;margin-top:12px;justify-content:center;flex-wrap:wrap}
+        .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:0.9rem;border:none;cursor:pointer;transition:all var(--transition);font-family:inherit}
+        .btn-primary{background:var(--blue);color:var(--white);box-shadow:0 2px 12px var(--blue-glow)}
+        .btn-primary:hover{background:var(--blue-hover);transform:translateY(-1px)}
+        .btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+        .btn-outline{background:transparent;color:var(--gray-600);border:1.5px solid var(--gray-200)}
+        .btn-outline:hover{border-color:var(--gray-400)}
+        .btn-success{background:var(--green);color:var(--white)}
+        .btn-success:hover{background:#059669;transform:translateY(-1px)}
+        .btn-success:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+        .btn-secondary{background:var(--gray-100);color:var(--gray-700)}
+        .btn-secondary:hover{background:var(--gray-200)}
+
+        /* Legal */
+        .legal-box{border:1px solid var(--gray-200);border-radius:var(--radius);padding:24px;max-height:320px;overflow-y:auto;background:var(--gray-50);font-size:0.85rem;color:var(--gray-600);line-height:1.65;margin-bottom:20px}
+        .legal-box h4{font-size:0.9rem;color:var(--navy);margin-bottom:8px}
+        .legal-box p{margin-bottom:8px}
+        .checkbox-group{display:flex;align-items:flex-start;gap:10px;margin-bottom:20px}
+        .checkbox-group input[type="checkbox"]{margin-top:3px;width:18px;height:18px;accent-color:var(--blue);flex-shrink:0}
+        .checkbox-group label{font-size:0.88rem;color:var(--gray-700);font-weight:500}
+
+        /* Upload Zone */
+        .drop-zone{border:2px dashed var(--gray-300);border-radius:var(--radius);padding:48px 24px;text-align:center;transition:all var(--transition);cursor:pointer;background:var(--gray-50)}
+        .drop-zone.drag-over{border-color:var(--blue);background:rgba(37,99,235,0.04)}
+        .drop-zone.has-files{border-style:solid;border-color:var(--green);background:rgba(16,185,129,0.04)}
+        .drop-zone .icon{font-size:2.5rem;margin-bottom:12px}
+        .drop-zone .title{font-weight:600;font-size:1rem;color:var(--gray-700);margin-bottom:4px}
+        .drop-zone .hint{font-size:0.82rem;color:var(--gray-400)}
+        .drop-zone input[type="file"]{display:none}
+        .file-list{margin-top:20px;display:flex;flex-direction:column;gap:8px}
+        .file-item{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-sm)}
+        .file-info{display:flex;align-items:center;gap:10px;font-size:0.85rem}
+        .file-info .ext{font-weight:600;color:var(--blue);text-transform:uppercase;font-size:0.75rem}
+        .file-info .name{color:var(--gray-700)}
+        .file-info .size{color:var(--gray-400);font-size:0.78rem}
+        .file-remove{background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:1.1rem;padding:4px;transition:color var(--transition)}
+        .file-remove:hover{color:var(--red)}
+        .upload-notes{display:flex;align-items:center;gap:8px;margin-top:16px;padding:12px 16px;background:rgba(37,99,235,0.06);border-radius:var(--radius-sm);font-size:0.82rem;color:var(--gray-600)}
+
+        /* Navigation Buttons */
+        .nav-buttons{display:flex;justify-content:space-between;margin-top:32px;padding-top:24px;border-top:1px solid var(--gray-200)}
+
+        /* Success state */
+        .success-state{text-align:center;padding:40px 0}
+        .success-state .icon{font-size:3.5rem;margin-bottom:16px}
+        .success-state h2{color:var(--green);margin-bottom:8px}
+        .success-state p{color:var(--gray-500);max-width:480px;margin:0 auto 24px}
+
+        /* Responsive */
+        @media(max-width:768px){
+            .form-grid{grid-template-columns:1fr}
+            .card{padding:28px 20px;margin-top:20px}
+            .container{padding:0 16px}
+            .nav-buttons{flex-direction:column;gap:12px}
+            .nav-buttons .btn{width:100%;justify-content:center}
+        }
+        @media(max-width:480px){
+            .step-indicators{flex-direction:column;gap:4px}
+            .step-dot{padding:6px 0;font-size:0.75rem}
+            .drop-zone{padding:32px 16px}
+        }
+    </style>
+</head>
+<body>
+
+<!-- Portal Header -->
+<header class="portal-header">
+    <div class="container portal-header-inner">
+        <div class="portal-logo">
+            <div class="mark">1</div>
+            1st 4 Mobile <span style="font-weight:400;color:rgba(255,255,255,0.5);margin-left:6px">· Customer Portal</span>
+        </div>
+        <div class="portal-header-right">
+            <span class="badge">ACN: 12 345 678</span>
+            <button class="logout-btn">Logout</button>
+        </div>
+    </div>
+</header>
+
+<!-- Progress Section -->
+<section class="progress-section">
+    <div class="container">
+        <div class="progress-top">
+            <span class="progress-label">Onboarding Progress</span>
+            <span class="progress-pct" x-text="overallPct + '%'"></span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" :style="'width:'+overallPct+'%'"></div>
+        </div>
+        <div class="step-indicators">
+            <div class="step-dot" :class="step >= 1 ? (step > 1 ? 'done' : 'active') : ''">
+                Step 1/3 — Company Profile
+            </div>
+            <div class="step-dot" :class="step >= 2 ? (step > 2 ? 'done' : 'active') : ''">
+                Step 2/3 — Legal Authorization
+            </div>
+            <div class="step-dot" :class="step >= 3 ? 'active' : ''">
+                Step 3/3 — Secure Data Upload
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main class="container" x-data="onboarding()" x-init="init">
+    <!-- Step 1: Company Profile -->
+    <div x-show="step === 1" x-cloak>
+        <div class="card">
+            <h2 class="card-title">Company Profile</h2>
+            <p class="card-subtitle">Tell us about your organisation so we can prepare your audit.</p>
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" class="input" x-model="form.companyName" placeholder="Acme Corporation Pty Ltd" />
+                    <span class="error-text" :class="{'show': errors.companyName}">Company name is required</span>
+                </div>
+                <div class="form-group">
+                    <label for="abn">ABN</label>
+                    <input type="text" id="abn" class="input" x-model="form.abn" placeholder="XX XXX XXX XXX" />
+                    <span class="error-text" :class="{'show': errors.abn}">Valid ABN is required</span>
+                </div>
+                <div class="form-group">
+                    <label for="industry">Industry</label>
+                    <select id="industry" class="select" x-model="form.industry">
+                        <option value="">Select industry...</option>
+                        <option value="Mining">Mining</option>
+                        <option value="Transport/Logistics">Transport / Logistics</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span class="error-text" :class="{'show': errors.industry}">Please select an industry</span>
+                </div>
+                <div class="form-group">
+                    <label for="fleetSize">Estimated Fleet Size (lines)</label>
+                    <input type="number" id="fleetSize" class="input" x-model="form.fleetSize" placeholder="e.g. 500" min="1" />
+                    <span class="error-text" :class="{'show': errors.fleetSize}">Enter an estimated fleet size</span>
+                </div>
+                <div class="form-group full">
+                    <label for="carrier">Primary Carrier</label>
+                    <select id="carrier" class="select" x-model="form.carrier">
+                        <option value="">Select carrier...</option>
+                        <option value="Telstra">Telstra</option>
+                        <option value="Optus">Optus</option>
+                        <option value="TPG/Vodafone">TPG / Vodafone</option>
+                        <option value="Multiple">Multiple Carriers</option>
+                    </select>
+                    <span class="error-text" :class="{'show': errors.carrier}">Please select your primary carrier</span>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <span></span>
+                <button class="btn btn-primary" @click="goStep2">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: Legal Authorization -->
+    <div x-show="step === 2" x-cloak>
+        <div class="card">
+            <h2 class="card-title">Legal Authorization</h2>
+            <p class="card-subtitle">We need your written authority to audit your billing data. Review the Letter of Authority below.</p>
+
+            <div class="legal-box">
+                <h4>LETTER OF AUTHORITY — TELECOMMUNICATIONS BILLING AUDIT</h4>
+                <p>This Letter of Authority is given by the undersigned (the "Customer") to 1st 4 Mobile Pty Ltd ("1st 4 Mobile") for the purpose of conducting a comprehensive billing audit of the Customer's telecommunications services.</p>
+                <p><strong>1. Appointment.</strong> The Customer appoints 1st 4 Mobile as its authorized representative to access, review, and analyze all telecommunications billing data, contracts, invoices, and usage records from the Customer's telecommunications carriers.</p>
+                <p><strong>2. Scope.</strong> This authorization covers all mobile, fleet, and fixed-line services operating under the Customer's account numbers for the preceding 36 months and going forward during the audit period.</p>
+                <p><strong>3. Duration.</strong> This authority remains in effect until the completion of the initial audit and any subsequent dispute resolution processes, or until revoked in writing by the Customer.</p>
+                <p><strong>4. Confidentiality.</strong> 1st 4 Mobile agrees to treat all Customer data as confidential and will not disclose it to any third party except as required to conduct the audit or as required by law.</p>
+                <p><strong>5. Fee Structure.</strong> The fee for services is 50% of the total verified overcharges recovered from carriers. No fee is payable if no recovery is achieved.</p>
+                <p><strong>6. Governing Law.</strong> This agreement is governed by the laws of New South Wales, Australia.</p>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="consent" x-model="form.consent" />
+                <label for="consent">I confirm I am authorized to sign on behalf of <strong x-text="form.companyName || '[Company Name]'"></strong> and I have read and agree to the terms above.</label>
+            </div>
+
+            <div>
+                <label style="display:block;margin-bottom:8px;font-weight:600;font-size:0.85rem;color:var(--gray-700)">Digital Signature</label>
+                <p style="font-size:0.82rem;color:var(--gray-400);margin-bottom:8px">Draw your signature below using your mouse or touchscreen.</p>
+                <div class="signature-area" :class="{'active': form.signed}">
+                    <canvas id="sigPad"></canvas>
+                    <div class="sig-tools">
+                        <button class="btn btn-outline" @click="clearSignature" type="button">&#128260; Clear</button>
+                        <button class="btn btn-primary" @click="authorize" :disabled="!form.consent || !form.signed">&#10003; Authorize</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" @click="step = 1">Back</button>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3: Secure Data Upload -->
+    <div x-show="step === 3" x-cloak>
+        <div class="card">
+            <h2 class="card-title">Secure Data Upload</h2>
+            <p class="card-subtitle">Upload your last 3 months of billing data and your MSA/rate card. All files are encrypted.</p>
+
+            <div class="drop-zone"
+                 :class="{'drag-over': dragging, 'has-files': files.length > 0}"
+                 @dragover.prevent="dragging = true"
+                 @dragleave.prevent="dragging = false"
+                 @drop.prevent="handleDrop($event)"
+                 @click="document.getElementById('fileInput').click()">
+                <div class="icon">&#128195;</div>
+                <div class="title" x-show="files.length === 0">Drop files here or click to browse</div>
+                <div class="hint" x-show="files.length === 0">Supports CSV, PDF, XLSX — up to 50 MB each</div>
+                <div class="title" x-show="files.length > 0" x-text="files.length + ' file(s) selected'"></div>
+                <input type="file" id="fileInput" multiple accept=".csv,.pdf,.xlsx" @change="handleInput($event)" />
+            </div>
+
+            <div class="file-list" x-show="files.length > 0">
+                <template x-for="(f, i) in files" :key="i">
+                    <div class="file-item">
+                        <div class="file-info">
+                            <span class="ext" x-text="f.ext"></span>
+                            <span class="name" x-text="f.name"></span>
+                            <span class="size" x-text="f.size"></span>
+                        </div>
+                        <button class="file-remove" @click="removeFile(i)">&#10005;</button>
+                    </div>
+                </template>
+            </div>
+
+            <div class="upload-notes">
+                &#128274; Files are encrypted in transit (TLS 1.3) and at rest (AES-256). Your data is protected under the Australian Privacy Act 1988.
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" @click="step = 2">Back</button>
+                <button class="btn btn-success" @click="startAudit" :disabled="files.length === 0 || auditing">
+                    <span x-show="!auditing">&#9654; Start Audit</span>
+                    <span x-show="auditing">Processing...</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success / Complete -->
+    <div x-show="completed" x-cloak>
+        <div class="card">
+            <div class="success-state">
+                <div class="icon">&#10004;&#65039;</div>
+                <h2>Audit Initiated Successfully</h2>
+                <p>Your files are being analyzed by our detection engines. We'll notify you at your registered email once the initial scan is complete (typically 7–14 business days).</p>
+                <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:20px">
+                    <a href="#" class="btn btn-primary">Go to Dashboard</a>
+                    <button class="btn btn-outline" @click="reset">Upload More Files</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>[x-cloak]{display:none!important}</style>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('onboarding', () => ({
+            step: 1,
+            completed: false,
+            auditing: false,
+            dragging: false,
+            files: [],
+            form: {
+                companyName: '',
+                abn: '',
+                industry: '',
+                fleetSize: '',
+                carrier: '',
+                consent: false,
+                signed: false
+            },
+            errors: {
+                companyName: false,
+                abn: false,
+                industry: false,
+                fleetSize: false,
+                carrier: false
+            },
+            sigCanvas: null,
+            sigCtx: null,
+            isDrawing: false,
+
+            get overallPct() {
+                if (this.completed) return 100;
+                if (this.step === 1) return 15;
+                if (this.step === 2) return 40;
+                if (this.step === 3) return 65;
+                return 0;
+            },
+
+            init() {
+                this.$nextTick(() => {
+                    if (document.getElementById('sigPad')) {
+                        this.initSignaturePad();
+                    }
+                });
+            },
+
+            initSignaturePad() {
+                const canvas = document.getElementById('sigPad');
+                if (!canvas) return;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = canvas.offsetWidth || 600;
+                canvas.height = canvas.offsetHeight || 200;
+                this.sigCanvas = canvas;
+                this.sigCtx = canvas.getContext('2d');
+                const ctx = this.sigCtx;
+                ctx.strokeStyle = '#0a1628';
+                ctx.lineWidth = 2.5;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                const getPos = (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    return { x: clientX - rect.left, y: clientY - rect.top };
+                };
+
+                const startDraw = (e) => {
+                    e.preventDefault();
+                    this.isDrawing = true;
+                    const pos = getPos(e);
+                    ctx.beginPath();
+                    ctx.moveTo(pos.x, pos.y);
+                };
+
+                const draw = (e) => {
+                    e.preventDefault();
+                    if (!this.isDrawing) return;
+                    const pos = getPos(e);
+                    ctx.lineTo(pos.x, pos.y);
+                    ctx.stroke();
+                };
+
+                const endDraw = (e) => {
+                    e.preventDefault();
+                    if (this.isDrawing) {
+                        this.isDrawing = false;
+                        ctx.closePath();
+                        this.form.signed = true;
+                    }
+                };
+
+                canvas.addEventListener('mousedown', startDraw);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', endDraw);
+                canvas.addEventListener('mouseleave', endDraw);
+                canvas.addEventListener('touchstart', startDraw, { passive: false });
+                canvas.addEventListener('touchmove', draw, { passive: false });
+                canvas.addEventListener('touchend', endDraw, { passive: false });
+            },
+
+            clearSignature() {
+                if (this.sigCtx) {
+                    this.sigCtx.clearRect(0, 0, this.sigCanvas.width, this.sigCanvas.height);
+                }
+                this.form.signed = false;
+            },
+
+            authorize() {
+                if (!this.form.consent || !this.form.signed) return;
+                this.step = 3;
+            },
+
+            goStep2() {
+                // Validate
+                this.errors.companyName = !this.form.companyName.trim();
+                this.errors.abn = !this.form.abn.trim();
+                this.errors.industry = !this.form.industry;
+                this.errors.fleetSize = !this.form.fleetSize || parseInt(this.form.fleetSize) < 1;
+                this.errors.carrier = !this.form.carrier;
+                const valid = !Object.values(this.errors).some(Boolean);
+                if (!valid) return;
+                this.step = 2;
+                this.$nextTick(() => {
+                    this.initSignaturePad();
+                });
+            },
+
+            handleDrop(e) {
+                this.dragging = false;
+                const droppedFiles = Array.from(e.dataTransfer.files);
+                this.addFiles(droppedFiles);
+            },
+
+            handleInput(e) {
+                const selected = Array.from(e.target.files);
+                this.addFiles(selected);
+                e.target.value = '';
+            },
+
+            addFiles(newFiles) {
+                newFiles.forEach(f => {
+                    const ext = f.name.split('.').pop().toUpperCase();
+                    const sizeKB = (f.size / 1024).toFixed(0);
+                    const sizeLabel = f.size > 1024 * 1024
+                        ? (f.size / (1024 * 1024)).toFixed(1) + ' MB'
+                        : sizeKB + ' KB';
+                    this.files.push({
+                        file: f,
+                        name: f.name,
+                        ext: ext,
+                        size: sizeLabel
+                    });
+                });
+            },
+
+            removeFile(i) {
+                this.files.splice(i, 1);
+            },
+
+            startAudit() {
+                if (this.files.length === 0) return;
+                this.auditing = true;
+                // Simulate processing
+                setTimeout(() => {
+                    this.auditing = false;
+                    this.completed = true;
+                }, 1800);
+            },
+
+            reset() {
+                this.step = 1;
+                this.completed = false;
+                this.files = [];
+                this.form.signed = false;
+                this.form.consent = false;
+                this.clearSignature();
+                this.errors = { companyName: false, abn: false, industry: false, fleetSize: false, carrier: false };
+            }
+        }));
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — 1st 4 Mobile</title>
+    <meta name="description" content="Audit dashboard — overcharge detection, billing drift charts, and discrepancy ledger." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --navy:#0a1628;
+            --navy-light:#111e35;
+            --blue:#2563eb;
+            --blue-hover:#1d4ed8;
+            --blue-glow:rgba(37,99,235,0.25);
+            --white:#ffffff;
+            --green:#10b981;
+            --green-dim:rgba(16,185,129,0.1);
+            --red:#ef4444;
+            --red-dim:rgba(239,68,68,0.1);
+            --amber:#f59e0b;
+            --gray-50:#f8fafc;
+            --gray-100:#f1f5f9;
+            --gray-200:#e2e8f0;
+            --gray-300:#cbd5e1;
+            --gray-400:#94a3b8;
+            --gray-500:#64748b;
+            --gray-600:#475569;
+            --gray-700:#334155;
+            --gray-800:#1e293b;
+            --radius:12px;
+            --radius-sm:8px;
+            --radius-lg:16px;
+            --shadow:0 4px 24px rgba(0,0,0,0.08);
+            --shadow-lg:0 12px 48px rgba(0,0,0,0.12);
+            --transition:200ms cubic-bezier(0.4,0,0.2,1);
+            --sidebar-w:260px;
+        }
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--gray-50);color:var(--gray-800);line-height:1.6;-webkit-font-smoothing:antialiased;display:flex;min-height:100vh}
+        a{color:inherit;text-decoration:none}
+
+        /* --- Sidebar --- */
+        .sidebar{width:var(--sidebar-w);background:var(--navy);color:var(--white);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;transition:transform var(--transition)}
+        .sidebar-header{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.06)}
+        .sidebar-logo{display:flex;align-items:center;gap:10px;font-size:1rem;font-weight:800;letter-spacing:-0.02em}
+        .sidebar-logo .mark{width:30px;height:30px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.85rem}
+        .sidebar-logo span{color:rgba(255,255,255,0.5);font-weight:400;font-size:0.78rem;margin-left:2px}
+        .sidebar-nav{padding:16px 12px;flex:1;display:flex;flex-direction:column;gap:4px}
+        .nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--radius-sm);font-size:0.88rem;font-weight:500;color:rgba(255,255,255,0.55);transition:all var(--transition);cursor:pointer}
+        .nav-item .icon{font-size:1.1rem;width:22px;text-align:center}
+        .nav-item:hover{color:var(--white);background:rgba(255,255,255,0.05)}
+        .nav-item.active{color:var(--white);background:rgba(37,99,235,0.2);font-weight:600}
+        .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.06);font-size:0.78rem;color:rgba(255,255,255,0.3);text-align:center}
+
+        /* --- Main --- */
+        .main{flex:1;margin-left:var(--sidebar-w);min-width:0}
+        .top-bar{background:var(--white);border-bottom:1px solid var(--gray-200);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+        .top-bar-left{display:flex;align-items:center;gap:16px}
+        .sidebar-toggle{display:none;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--gray-600);padding:4px}
+        .top-bar-title{font-weight:700;font-size:1.05rem;color:var(--navy)}
+        .top-bar-right{display:flex;align-items:center;gap:16px}
+        .top-badge{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--green-dim);color:var(--green);border-radius:100px;font-size:0.8rem;font-weight:600}
+        .avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem}
+
+        .dashboard-content{padding:28px 32px 60px}
+
+        /* --- Stats Bar --- */
+        .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:28px}
+        .stat-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:24px;transition:box-shadow var(--transition)}
+        .stat-card:hover{box-shadow:var(--shadow)}
+        .stat-card .label{font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:var(--gray-400);margin-bottom:6px}
+        .stat-card .value{font-size:1.8rem;font-weight:800;color:var(--navy);letter-spacing:-0.02em}
+        .stat-card .value.green{color:var(--green)}
+        .stat-card .sub{font-size:0.82rem;color:var(--gray-500);margin-top:4px;display:flex;align-items:center;gap:4px}
+        .stat-card .trend-up{color:var(--green)}
+        .status-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:100px;font-size:0.85rem;font-weight:600}
+        .status-badge.analyzing{background:rgba(37,99,235,0.1);color:var(--blue)}
+        .status-badge.dispute{background:rgba(245,158,11,0.1);color:var(--amber)}
+        .status-badge.submitted{background:rgba(99,102,241,0.1);color:#6366f1}
+        .status-badge.credit{background:var(--green-dim);color:var(--green)}
+
+        /* --- Section Headers --- */
+        .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+        .section-header h3{font-size:1.05rem;font-weight:700}
+        .section-header .link{font-size:0.82rem;color:var(--blue);font-weight:500;cursor:pointer}
+        .section-header .link:hover{text-decoration:underline}
+
+        /* --- Chart --- */
+        .chart-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:24px;margin-bottom:28px}
+        .chart-card canvas{max-height:280px;width:100%!important}
+
+        /* --- Engine Cards --- */
+        .engines-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+        .engine-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:20px;transition:all var(--transition)}
+        .engine-card:hover{box-shadow:var(--shadow);border-color:var(--gray-300)}
+        .engine-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+        .engine-name{font-weight:600;font-size:0.88rem;display:flex;align-items:center;gap:8px}
+        .engine-name .eicon{font-size:0.9rem}
+        .engine-amount{font-size:1.4rem;font-weight:800;color:var(--navy);letter-spacing:-0.02em;margin-bottom:4px}
+        .engine-link{font-size:0.75rem;color:var(--blue);font-weight:500;cursor:pointer}
+        .engine-link:hover{text-decoration:underline}
+        .engine-confidence{margin-top:10px}
+        .conf-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--gray-400);margin-bottom:3px}
+        .conf-track{height:4px;background:var(--gray-100);border-radius:2px;overflow:hidden}
+        .conf-fill{height:100%;border-radius:2px;transition:width 0.8s ease}
+
+        /* --- Table --- */
+        .table-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;margin-bottom:28px}
+        .table-toolbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--gray-200);flex-wrap:wrap;gap:12px}
+        .table-toolbar .left{display:flex;align-items:center;gap:12px}
+        .table-toolbar .right{display:flex;align-items:center;gap:12px}
+        .search-input{padding:8px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:0.85rem;font-family:inherit;outline:none;width:220px;transition:border-color var(--transition)}
+        .search-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
+        .sort-select{padding:8px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:0.85rem;font-family:inherit;outline:none;background:var(--white);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%2394a3b8' d='M5 7L1 3h8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+        .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--radius-sm);font-weight:600;font-size:0.85rem;border:none;cursor:pointer;transition:all var(--transition);font-family:inherit;white-space:nowrap}
+        .btn-primary{background:var(--blue);color:var(--white)}
+        .btn-primary:hover{background:var(--blue-hover)}
+        .btn-outline{background:transparent;color:var(--gray-600);border:1.5px solid var(--gray-200)}
+        .btn-outline:hover{border-color:var(--gray-400);background:var(--gray-50)}
+        .btn-success{background:var(--green);color:var(--white)}
+        .btn-success:hover{background:#059669}
+
+        .table-wrap{overflow-x:auto}
+        table{width:100%;border-collapse:collapse;font-size:0.84rem}
+        th{text-align:left;padding:12px 16px;font-weight:600;color:var(--gray-500);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid var(--gray-200);background:var(--gray-50);cursor:pointer;user-select:none;white-space:nowrap}
+        th:hover{color:var(--gray-700)}
+        th .sort-icon{display:inline-block;margin-left:4px;opacity:0.3}
+        th .sort-icon.active{opacity:1;color:var(--blue)}
+        td{padding:12px 16px;border-bottom:1px solid var(--gray-100);color:var(--gray-700);white-space:nowrap}
+        tr:hover td{background:var(--gray-50)}
+        .td-variance{font-weight:600}
+        .td-variance.positive{color:var(--red)}
+        .td-variance.negative{color:var(--green)}
+        .td-error{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:0.75rem;font-weight:600}
+        .td-error.ghost{background:var(--red-dim);color:var(--red)}
+        .td-error.rate{background:rgba(245,158,11,0.1);color:var(--amber)}
+        .td-error.roam{background:rgba(99,102,241,0.1);color:#6366f1}
+        .td-error.legacy{background:rgba(236,72,153,0.1);color:#ec4899}
+        .td-error.dupe{background:var(--green-dim);color:var(--green)}
+        .td-conf{display:flex;align-items:center;gap:6px}
+        .td-conf .bar{width:50px;height:4px;background:var(--gray-100);border-radius:2px;overflow:hidden}
+        .td-conf .bar-fill{height:100%;background:var(--blue);border-radius:2px}
+
+        /* --- Action Panel --- */
+        .action-panel{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+        .action-panel .text{font-size:0.88rem;color:var(--gray-600)}
+        .action-panel .text strong{color:var(--navy)}
+        .action-btns{display:flex;gap:12px;flex-wrap:wrap}
+
+        /* --- Mobile Overlay --- */
+        .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:45}
+        @media(max-width:1024px){
+            .stats-row{grid-template-columns:1fr 1fr}
+        }
+        @media(max-width:768px){
+            .sidebar{transform:translateX(-100%)}
+            .sidebar.open{transform:translateX(0)}
+            .sidebar-overlay.open{display:block}
+            .sidebar-toggle{display:block}
+            .main{margin-left:0}
+            .top-bar{padding:12px 16px}
+            .dashboard-content{padding:20px 16px}
+            .stats-row{grid-template-columns:1fr}
+            .engines-grid{grid-template-columns:1fr 1fr}
+            .action-panel{flex-direction:column;text-align:center}
+            .action-btns{width:100%}
+            .action-btns .btn{flex:1;justify-content:center}
+            .table-toolbar{flex-direction:column;align-items:stretch}
+            .table-toolbar .left,.table-toolbar .right{flex-wrap:wrap}
+            .search-input{width:100%}
+        }
+        @media(max-width:480px){
+            .engines-grid{grid-template-columns:1fr}
+            .top-bar-title{font-size:0.9rem}
+            .stat-card .value{font-size:1.4rem}
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar" :class="{'open': sidebarOpen}">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <div class="mark">1</div>
+            1st 4 Mobile <span>· Portal</span>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-item active"><span class="icon">&#9632;</span> Dashboard</div>
+        <div class="nav-item"><span class="icon">&#128214;</span> Audit History</div>
+        <div class="nav-item"><span class="icon">&#9878;&#65039;</span> Disputes</div>
+        <div class="nav-item"><span class="icon">&#9881;&#65039;</span> Settings</div>
+    </nav>
+    <div class="sidebar-footer">&copy; 2026 1st 4 Mobile</div>
+</aside>
+<div class="sidebar-overlay" :class="{'open': sidebarOpen}" @click="sidebarOpen = false"></div>
+
+<!-- Main -->
+<div class="main" x-data="dashboard()" x-init="init">
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <button class="sidebar-toggle" @click="sidebarOpen = !sidebarOpen">&#9776;</button>
+            <span class="top-bar-title">Dashboard</span>
+        </div>
+        <div class="top-bar-right">
+            <div class="top-badge">&#9679; Live</div>
+            <div class="avatar">AC</div>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="label">Total Overcharges Detected</div>
+                <div class="value green">$<span x-text="formatNum(stats.totalOvercharges)"></span></div>
+                <div class="sub"><span class="trend-up">&#9650;</span> $8,420 added this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Annualized Ongoing Savings</div>
+                <div class="value green">$<span x-text="formatNum(stats.annualSavings)"></span></div>
+                <div class="sub">Projected yearly run rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Status</div>
+                <div>
+                    <span class="status-badge" :class="stats.statusClass" x-text="stats.statusLabel"></span>
+                </div>
+                <div class="sub">Last updated: Today, 09:42 AM</div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-card">
+            <div class="section-header">
+                <h3>Monthly Billing Drift</h3>
+                <span class="link">View Details</span>
+            </div>
+            <canvas id="driftChart"></canvas>
+        </div>
+
+        <!-- Engine Cards -->
+        <div class="section-header">
+            <h3>Detection Engine Breakdown</h3>
+            <span class="link">View All Line Items</span>
+        </div>
+        <div class="engines-grid">
+            <template x-for="(e,i) in engines" :key="i">
+                <div class="engine-card">
+                    <div class="engine-top">
+                        <span class="engine-name"><span class="eicon" x-text="e.icon"></span> <span x-text="e.name"></span></span>
+                    </div>
+                    <div class="engine-amount">$<span x-text="formatNum(e.amount)"></span></div>
+                    <span class="engine-link">View Line Items &rarr;</span>
+                    <div class="engine-confidence">
+                        <div class="conf-label">
+                            <span>Confidence</span>
+                            <span x-text="e.confidence + '%'"></span>
+                        </div>
+                        <div class="conf-track">
+                            <div class="conf-fill" :style="'width:'+e.confidence+'%;background:'+e.color"></div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Discrepancy Ledger Table -->
+        <div class="table-card">
+            <div class="table-toolbar">
+                <div class="left">
+                    <h3 style="font-size:0.95rem;font-weight:700">Discrepancy Ledger</h3>
+                    <input type="text" class="search-input" placeholder="Search Service ID, error type..." x-model="searchQuery" />
+                </div>
+                <div class="right">
+                    <select class="sort-select" x-model="sortKey">
+                        <option value="variance">Sort: Variance</option>
+                        <option value="serviceId">Service ID</option>
+                        <option value="chargeCategory">Category</option>
+                        <option value="confidence">Confidence</option>
+                    </select>
+                    <button class="btn btn-primary" @click="downloadReport">&#128231; Download Full Report</button>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th @click="sortBy('serviceId')">Service ID <span class="sort-icon" :class="{'active': sortKey==='serviceId'}">&#9650;</span></th>
+                            <th @click="sortBy('errorType')">Error Type <span class="sort-icon" :class="{'active': sortKey==='errorType'}">&#9650;</span></th>
+                            <th @click="sortBy('chargeCategory')">Charge Category <span class="sort-icon" :class="{'active': sortKey==='chargeCategory'}">&#9650;</span></th>
+                            <th @click="sortBy('billedAmount')">Billed Amount <span class="sort-icon" :class="{'active': sortKey==='billedAmount'}">&#9650;</span></th>
+                            <th @click="sortBy('contractedAmount')">Contracted Amount <span class="sort-icon" :class="{'active': sortKey==='contractedAmount'}">&#9650;</span></th>
+                            <th @click="sortBy('variance')">Variance <span class="sort-icon" :class="{'active': sortKey==='variance'}">&#9650;</span></th>
+                            <th @click="sortBy('period')">Period <span class="sort-icon" :class="{'active': sortKey==='period'}">&#9650;</span></th>
+                            <th @click="sortBy('confidence')">Confidence <span class="sort-icon" :class="{'active': sortKey==='confidence'}">&#9650;</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="row in filteredRows" :key="row.id">
+                            <tr>
+                                <td x-text="row.serviceId" style="font-weight:600;color:var(--navy)"></td>
+                                <td><span class="td-error" :class="row.errorClass" x-text="row.errorType"></span></td>
+                                <td x-text="row.chargeCategory"></td>
+                                <td>$<span x-text="row.billedAmount.toLocaleString()"></span></td>
+                                <td>$<span x-text="row.contractedAmount.toLocaleString()"></span></td>
+                                <td class="td-variance" :class="row.variance > 0 ? 'positive' : 'negative'">$<span x-text="Math.abs(row.variance).toLocaleString()"></span> <span x-text="row.variance > 0 ? 'over' : 'under'"></span></td>
+                                <td x-text="row.period"></td>
+                                <td>
+                                    <div class="td-conf">
+                                        <span x-text="row.confidence + '%'"></span>
+                                        <div class="bar"><div class="bar-fill" :style="'width:'+row.confidence+'%'"></div></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                        <tr x-show="filteredRows.length === 0">
+                            <td colspan="8" style="text-align:center;padding:32px;color:var(--gray-400);font-size:0.9rem">No discrepancies match your search.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Action Panel -->
+        <div class="action-panel">
+            <div class="text">
+                <strong><span x-text="filteredRows.length"></span> discrepancies</strong> detected across <strong><span x-text="engines.reduce((a,e) => a + e.amount, 0) > 0 ? engines.length : 0"></span> engines</strong>. Ready to prepare your dispute briefcase.
+            </div>
+            <div class="action-btns">
+                <button class="btn btn-success">&#9878;&#65039; Submit Dispute to Telstra</button>
+                <button class="btn btn-outline">&#128230; Download Dispute Package</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>[x-cloak]{display:none!important}</style>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('dashboard', () => ({
+            sidebarOpen: false,
+            chartInstance: null,
+            searchQuery: '',
+            sortKey: 'variance',
+            sortAsc: false,
+
+            stats: {
+                totalOvercharges: 84720,
+                annualSavings: 338880,
+                statusLabel: 'Dispute Briefcase Generated',
+                statusClass: 'dispute'
+            },
+
+            engines: [
+                { name: 'Ghost Line Detector', icon: '&#128373;', amount: 23240, confidence: 94, color: '#ef4444' },
+                { name: 'Rate Plan Validator', icon: '&#128200;', amount: 18600, confidence: 88, color: '#f59e0b' },
+                { name: 'Roaming Anomaly Check', icon: '&#127758;', amount: 9720, confidence: 91, color: '#6366f1' },
+                { name: 'Legacy Rollback Scanner', icon: '&#128260;', amount: 21500, confidence: 96, color: '#ec4899' },
+                { name: 'Duplicate Service Filter', icon: '&#128268;', amount: 11660, confidence: 85, color: '#10b981' }
+            ],
+
+            rows: [
+                { id:1, serviceId:'TEL-004213', errorType:'Ghost Line', errorClass:'ghost', chargeCategory:'Monthly Access', billedAmount:189, contractedAmount:0, variance:189, period:'Mar 2026', confidence:97 },
+                { id:2, serviceId:'TEL-018422', errorType:'Rate Mismatch', errorClass:'rate', chargeCategory:'Data Plan', billedAmount:245, contractedAmount:149, variance:96, period:'Mar 2026', confidence:91 },
+                { id:3, serviceId:'OPT-007831', errorType:'Roaming Anomaly', errorClass:'roam', chargeCategory:'International Data', billedAmount:580, contractedAmount:0, variance:580, period:'Feb 2026', confidence:94 },
+                { id:4, serviceId:'TEL-011002', errorType:'Legacy Plan', errorClass:'legacy', chargeCategory:'Voice Plan', billedAmount:320, contractedAmount:180, variance:140, period:'Mar 2026', confidence:96 },
+                { id:5, serviceId:'OPT-003177', errorType:'Duplicate Service', errorClass:'dupe', chargeCategory:'Device Insurance', billedAmount:45, contractedAmount:0, variance:45, period:'Feb 2026', confidence:88 },
+                { id:6, serviceId:'TEL-029405', errorType:'Ghost Line', errorClass:'ghost', chargeCategory:'Monthly Access', billedAmount:189, contractedAmount:0, variance:189, period:'Jan 2026', confidence:98 },
+                { id:7, serviceId:'TEL-005678', errorType:'Rate Mismatch', errorClass:'rate', chargeCategory:'Data Pool', billedAmount:420, contractedAmount:290, variance:130, period:'Mar 2026', confidence:86 },
+                { id:8, serviceId:'OPT-009234', errorType:'Roaming Anomaly', errorClass:'roam', chargeCategory:'SMS Roaming', billedAmount:210, contractedAmount:0, variance:210, period:'Feb 2026', confidence:92 },
+                { id:9, serviceId:'TEL-031112', errorType:'Legacy Plan', errorClass:'legacy', chargeCategory:'Bundle', billedAmount:510, contractedAmount:340, variance:170, period:'Jan 2026', confidence:95 },
+                { id:10, serviceId:'TEL-008900', errorType:'Duplicate Service', errorClass:'dupe', chargeCategory:'Security Add-on', billedAmount:35, contractedAmount:0, variance:35, period:'Mar 2026', confidence:84 },
+                { id:11, serviceId:'OPT-001256', errorType:'Ghost Line', errorClass:'ghost', chargeCategory:'Monthly Access', billedAmount:189, contractedAmount:0, variance:189, period:'Jan 2026', confidence:96 },
+                { id:12, serviceId:'TEL-042188', errorType:'Rate Mismatch', errorClass:'rate', chargeCategory:'Voice Plan', billedAmount:375, contractedAmount:199, variance:176, period:'Feb 2026', confidence:89 },
+            ],
+
+            get filteredRows() {
+                let rows = this.rows;
+                const q = this.searchQuery.toLowerCase().trim();
+                if (q) {
+                    rows = rows.filter(r =>
+                        r.serviceId.toLowerCase().includes(q) ||
+                        r.errorType.toLowerCase().includes(q) ||
+                        r.chargeCategory.toLowerCase().includes(q)
+                    );
+                }
+                // Sort
+                const key = this.sortKey;
+                const asc = this.sortAsc;
+                rows = [...rows].sort((a, b) => {
+                    let va = a[key], vb = b[key];
+                    if (typeof va === 'string') va = va.toLowerCase();
+                    if (typeof vb === 'string') vb = vb.toLowerCase();
+                    if (va < vb) return asc ? -1 : 1;
+                    if (va > vb) return asc ? 1 : -1;
+                    return 0;
+                });
+                return rows;
+            },
+
+            sortBy(key) {
+                if (this.sortKey === key) {
+                    this.sortAsc = !this.sortAsc;
+                } else {
+                    this.sortKey = key;
+                    this.sortAsc = false;
+                }
+            },
+
+            formatNum(v) {
+                return typeof v === 'number' ? v.toLocaleString() : v;
+            },
+
+            downloadReport() {
+                alert('Full report download started. The Excel file will be ready momentarily.');
+            },
+
+            init() {
+                this.$nextTick(() => {
+                    this.initChart();
+                });
+            },
+
+            initChart() {
+                const ctx = document.getElementById('driftChart');
+                if (!ctx) return;
+                if (this.chartInstance) this.chartInstance.destroy();
+
+                const months = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+                const contracted = [14200, 14300, 14100, 14250, 14300, 14200, 14150, 14280, 14200];
+                const actual =    [14800, 15300, 15900, 16400, 17100, 17800, 18300, 18900, 19600];
+
+                this.chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: months,
+                        datasets: [
+                            {
+                                label: 'Contracted Rate',
+                                data: contracted,
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16,185,129,0.06)',
+                                fill: true,
+                                tension: 0.35,
+                                pointRadius: 4,
+                                pointBackgroundColor: '#10b981',
+                                borderWidth: 2.5
+                            },
+                            {
+                                label: 'What You Paid',
+                                data: actual,
+                                borderColor: '#ef4444',
+                                backgroundColor: 'rgba(239,68,68,0.04)',
+                                fill: true,
+                                tension: 0.35,
+                                pointRadius: 4,
+                                pointBackgroundColor: '#ef4444',
+                                borderWidth: 2.5
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20,
+                                    font: { family: 'Inter', size: 12 }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: '#0a1628',
+                                titleFont: { family: 'Inter', size: 12 },
+                                bodyFont: { family: 'Inter', size: 12 },
+                                padding: 12,
+                                cornerRadius: 8,
+                                callbacks: {
+                                    label: (ctx) => ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString()
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { family: 'Inter', size: 11 }, color: '#94a3b8' }
+                            },
+                            y: {
+                                grid: { color: '#f1f5f9' },
+                                ticks: {
+                                    font: { family: 'Inter', size: 11 },
+                                    color: '#94a3b8',
+                                    callback: (v) => '$' + v.toLocaleString()
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }));
+    });
+</script>
+</body>
+</html>
