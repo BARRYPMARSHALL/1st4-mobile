@@ -9,11 +9,11 @@ import uuid
 from datetime import datetime
 from typing import Optional
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
-from sqlalchemy import select, func, desc, case
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
+from sqlalchemy import select, func, case
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
+from backend.auth import get_current_user
 from backend.deps import get_db, get_client_or_404
 from backend.models import (
     Client,
@@ -25,6 +25,7 @@ from backend.models import (
     Invoice,
     InvoiceStatus,
     UploadedFile,
+    User,
 )
 
 logger = logging.getLogger("1st4backend.owner_routes")
@@ -56,7 +57,10 @@ def _client_to_dict(client: Client) -> dict:
 
 
 @router.get("/dashboard")
-async def owner_dashboard(db: AsyncSession = Depends(get_db)):
+async def owner_dashboard(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """Return owner dashboard with pipeline stats, client queue, invoice data, and recent activity."""
 
     # ── Pipeline stats ─────────────────────────────────────────────
@@ -149,6 +153,7 @@ async def list_clients(
     status_filter: Optional[str] = Query(None, alias="status"),
     search: Optional[str] = Query(None),
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """List all clients with optional search/filter by status."""
     stmt = select(Client)
@@ -192,7 +197,6 @@ async def _run_audit_task(
     audit_id: uuid.UUID,
 ):
     """Background task: run the pipeline, update DB with results."""
-    from sqlalchemy.ext.asyncio import AsyncSession
     from backend.database import async_session_factory
 
     try:
@@ -248,6 +252,7 @@ async def trigger_audit(
     background_tasks: BackgroundTasks,
     client: Client = Depends(get_client_or_404),
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Trigger the audit pipeline for a client (runs in background)."""
     # Validate client has uploaded files
@@ -337,6 +342,7 @@ async def trigger_audit(
 async def list_client_audits(
     client: Client = Depends(get_client_or_404),
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """List all audits for a specific client."""
     result = await db.execute(
@@ -371,6 +377,7 @@ async def list_client_audits(
 async def create_dispute(
     body: dict,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Create a dispute from audit results."""
     client_id_str = body.get("client_id")
@@ -458,6 +465,7 @@ async def update_dispute_status(
     dispute_id: str,
     body: dict,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """Update dispute status. If credit_issued, also create an Invoice."""
     new_status_str = body.get("status")
@@ -524,7 +532,10 @@ async def update_dispute_status(
 
 
 @router.get("/invoices")
-async def list_invoices(db: AsyncSession = Depends(get_db)):
+async def list_invoices(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """List all invoices with total invoiced, collected, and outstanding."""
     # Aggregates
     agg_result = await db.execute(

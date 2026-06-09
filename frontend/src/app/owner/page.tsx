@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Progress, ProgressLabel, ProgressTrack, ProgressIndicator } from "@/components/ui/progress";
 import { getOwnerDashboard, triggerWorkerAudit, type OwnerDashboardData } from "@/lib/api";
+import AuthGuard from "@/components/AuthGuard";
 import {
   UsersIcon,
   Loader2Icon,
@@ -69,7 +70,7 @@ export default function OwnerPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [runningAudit, setRunningAudit] = useState<string | null>(null);
-  const [selectedDispute, setSelectedDispute] = useState<OwnerDashboardData["disputes"][0] | null>(null);
+  const [selectedDispute, setSelectedDispute] = useState<{ company_name: string; audit_findings: string; dispute_letter: string; status: string; completed_at: string } | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -124,10 +125,12 @@ export default function OwnerPage() {
     );
   }
 
-  const pipeline = data?.pipeline || { leads_uploaded: 0, audits_processing: 0, disputes_active: 0, invoices_settled: 0 };
-  const cash = data?.cash_collector || { total_invoiced: 0, total_collected: 0, outstanding: 0, fee_percentage: 50 };
+  const pipeline = data?.pipeline || { total_clients: 0, leads_uploaded: 0, audits_processing: 0, disputes_active: 0, invoices_settled: 0 };
+  const cash = data || { total_invoiced: 0, total_collected: 0, outstanding: 0 };
+  const feePercentage = 50;
 
   return (
+    <AuthGuard>
     <div className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 sm:py-8">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
@@ -221,7 +224,7 @@ export default function OwnerPage() {
                           </div>
                         </TableCell>
                         <TableCell className="text-xs">{client.industry}</TableCell>
-                        <TableCell className="text-xs">{client.carrier}</TableCell>
+                        <TableCell className="text-xs">{client.primary_carrier}</TableCell>
                         <TableCell>
                           <Badge
                             variant={
@@ -237,7 +240,7 @@ export default function OwnerPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="text-xs text-gray-500">
-                          {new Date(client.uploaded_at).toLocaleDateString()}
+                          {new Date(client.created_at).toLocaleDateString()}
                         </TableCell>
                         <TableCell>
                           <Button
@@ -273,15 +276,15 @@ export default function OwnerPage() {
           </Card>
         </section>
 
-        {/* ─── 3. Dispute Manager ─── */}
+        {/* ─── 3. Recent Activity ─── */}
         <section className="mb-8">
           <Card className="border-0 shadow-sm">
             <CardHeader>
               <CardTitle className="text-sm font-semibold">
-                Dispute Manager
+                Recent Activity
               </CardTitle>
               <CardDescription>
-                Completed audits ready for review and carrier submission
+                Latest client registrations and status changes
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
@@ -290,52 +293,36 @@ export default function OwnerPage() {
                   <TableRow>
                     <TableHead className="text-xs">Company</TableHead>
                     <TableHead className="text-xs">Status</TableHead>
-                    <TableHead className="text-xs">Completed</TableHead>
-                    <TableHead className="text-xs">Actions</TableHead>
+                    <TableHead className="text-xs">Timestamp</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data?.disputes?.length ? (
-                    data.disputes.map((dispute) => (
-                      <TableRow key={dispute.id}>
+                  {data?.recent_activity?.length ? (
+                    data.recent_activity.map((activity, i) => (
+                      <TableRow key={i}>
                         <TableCell className="text-xs font-medium">
-                          {dispute.company_name}
+                          {activity.company_name}
                         </TableCell>
                         <TableCell>
                           <Badge
-                            variant={
-                              dispute.status === "ready"
-                                ? "default"
-                                : "secondary"
-                            }
+                            variant="outline"
                             className="text-xs"
                           >
-                            {dispute.status}
+                            {activity.status}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-xs text-gray-500">
-                          {new Date(dispute.completed_at).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-7 text-xs"
-                            onClick={() => setSelectedDispute(dispute)}
-                          >
-                            <EyeIcon className="mr-1 h-3 w-3" />
-                            Review
-                          </Button>
+                          {new Date(activity.timestamp).toLocaleDateString()}
                         </TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={4}
+                        colSpan={3}
                         className="py-8 text-center text-sm text-gray-400"
                       >
-                        No completed audits ready for review
+                        No recent activity
                       </TableCell>
                     </TableRow>
                   )}
@@ -389,10 +376,10 @@ export default function OwnerPage() {
               <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700">
-                    Your Fee ({cash.fee_percentage}% of collected)
+                    Your Fee ({feePercentage}% of collected)
                   </span>
                   <span className="text-lg font-bold text-[#2563eb]">
-                    ${((cash.total_collected * cash.fee_percentage) / 100).toLocaleString()}
+                    ${((cash.total_collected * feePercentage) / 100).toLocaleString()}
                   </span>
                 </div>
                 <div className="mt-2">
@@ -469,5 +456,6 @@ export default function OwnerPage() {
         </div>
       )}
     </div>
+    </AuthGuard>
   );
 }

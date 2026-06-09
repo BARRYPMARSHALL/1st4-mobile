@@ -1,12 +1,35 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
-async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
+let _authToken: string | null = null;
+
+export function setAuthToken(token: string | null) {
+  _authToken = token;
+  if (token) {
+    localStorage.setItem('1st4_auth_token', token);
+  } else {
+    localStorage.removeItem('1st4_auth_token');
+  }
+}
+
+export function getAuthToken(): string | null {
+  if (!_authToken && typeof window !== 'undefined') {
+    _authToken = localStorage.getItem('1st4_auth_token');
+  }
+  return _authToken;
+}
+
+export async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
+  const token = getAuthToken();
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(options?.headers as Record<string, string>),
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
+    headers,
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
@@ -57,6 +80,7 @@ export interface DashboardData {
 
 export interface OwnerDashboardData {
   pipeline: {
+    total_clients: number;
     leads_uploaded: number;
     audits_processing: number;
     disputes_active: number;
@@ -65,25 +89,26 @@ export interface OwnerDashboardData {
   clients: Array<{
     id: string;
     company_name: string;
+    abn?: string;
     industry: string;
-    carrier: string;
+    fleet_size: number;
+    primary_carrier: string;
+    email?: string;
     status: string;
-    uploaded_at: string;
+    created_at: string;
+    updated_at: string;
+    authorized_at?: string | null;
+    authorized_by?: string | null;
   }>;
-  disputes: Array<{
-    id: string;
+  total_invoiced: number;
+  total_collected: number;
+  outstanding: number;
+  recent_activity: Array<{
+    client_id: string;
     company_name: string;
-    audit_findings: string;
-    dispute_letter: string;
     status: string;
-    completed_at: string;
+    timestamp: string;
   }>;
-  cash_collector: {
-    total_invoiced: number;
-    total_collected: number;
-    outstanding: number;
-    fee_percentage: number;
-  };
 }
 
 export interface DocumentData {
@@ -145,7 +170,20 @@ export async function getDocuments(id: string): Promise<DocumentData[]> {
 }
 
 export async function getOwnerDashboard(): Promise<OwnerDashboardData> {
-  return apiFetch('/api/owner/dashboard');
+  const raw: any = await apiFetch('/api/owner/dashboard');
+  return {
+    pipeline: raw.pipeline_stats,
+    clients: raw.client_queue?.map((c: any) => ({
+      ...c,
+      primary_carrier: c.primary_carrier || "",
+      created_at: c.created_at,
+      updated_at: c.updated_at,
+    })) || [],
+    total_invoiced: raw.total_invoiced || 0,
+    total_collected: raw.total_collected || 0,
+    outstanding: raw.outstanding || 0,
+    recent_activity: raw.recent_activity || [],
+  };
 }
 
 export async function triggerWorkerAudit(

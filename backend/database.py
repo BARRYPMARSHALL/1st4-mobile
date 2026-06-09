@@ -8,7 +8,6 @@ Connection: postgresql+asyncpg://free33@localhost:5432/first4mobile
 import asyncio
 import logging
 import os
-from pathlib import Path
 from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -90,6 +89,7 @@ async def init_db(max_retries: int = 5, retry_delay: int = 2) -> None:
         Dispute,
         Invoice,
         UploadedFile,
+        User,
     )
 
     last_error: Exception | None = None

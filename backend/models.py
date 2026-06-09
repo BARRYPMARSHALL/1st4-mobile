@@ -204,3 +204,16 @@ class Invoice(Base):
 
     client = relationship("Client", back_populates="invoices")
     dispute = relationship("Dispute", back_populates="invoices")
+
+
+class User(Base):
+    """Partner / admin users who access the owner dashboard."""
+    __tablename__ = "users"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=_new_uuid)
+    email = Column(String(255), unique=True, nullable=False, index=True)
+    hashed_password = Column(String(255), nullable=False)
+    full_name = Column(String(255), nullable=True)
+    is_active = Column(Integer, default=1, nullable=False)
+    created_at = Column(DateTime, default=_utcnow, nullable=False)
+    last_login_at = Column(DateTime, nullable=True)

@@ -225,6 +225,15 @@ export default function LandingPage() {
                 <ArrowRightIcon className="ml-2 h-4 w-4" />
               </Button>
             </Link>
+            <Link href="/book">
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-11 border-[#2563eb]/40 px-6 text-[#2563eb] hover:bg-[#2563eb]/10"
+              >
+                Book a Demo
+              </Button>
+            </Link>
             <Link href="#how-it-works">
               <Button
                 size="lg"
