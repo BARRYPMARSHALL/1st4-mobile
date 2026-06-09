@@ -96,6 +96,11 @@ document.addEventListener('click', function(e) {
                     </Link>
                   </li>
                   <li>
+                    <Link href="/blog" className="text-sm text-white/70 transition-colors hover:text-white">
+                      Blog
+                    </Link>
+                  </li>
+                  <li>
                     <Link href="/owner" className="text-sm text-white/70 transition-colors hover:text-white">
                       Partner Portal
                     </Link>
