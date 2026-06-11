@@ -62,10 +62,12 @@ app.mount("/static", StaticFiles(directory=str(WWW_DIR)), name="www_static")
 
 # ── Register routers ──────────────────────────────────────────────
 from backend.auth_routes import router as auth_router  # noqa: E402
+from backend.book_routes import router as book_router  # noqa: E402
 from backend.owner_routes import router as owner_router  # noqa: E402
 from backend.client_routes import router as client_router  # noqa: E402
 
 app.include_router(auth_router)
+app.include_router(book_router)
 app.include_router(owner_router)
 app.include_router(client_router)
 

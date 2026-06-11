@@ -217,3 +217,18 @@ class User(Base):
     is_active = Column(Integer, default=1, nullable=False)
     created_at = Column(DateTime, default=_utcnow, nullable=False)
     last_login_at = Column(DateTime, nullable=True)
+
+
+class Booking(Base):
+    """Demo booking requests from the Book a Demo page."""
+    __tablename__ = "bookings"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=_new_uuid)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False, index=True)
+    company = Column(String(255), nullable=False)
+    phone = Column(String(50), nullable=True)
+    employees = Column(String(50), nullable=True)
+    date = Column(String(20), nullable=False)   # ISO date string (YYYY-MM-DD)
+    time = Column(String(20), nullable=False)   # e.g. "09:00"
+    created_at = Column(DateTime, default=_utcnow, nullable=False)

@@ -85,6 +85,7 @@ async def init_db(max_retries: int = 5, retry_delay: int = 2) -> None:
     """
     from backend.models import (  # noqa: F401 — ensure models are imported before create_all
         AuditResult,
+        Booking,
         Client,
         Dispute,
         Invoice,

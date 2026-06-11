@@ -15,6 +15,9 @@ import { CalendarIcon, ClockIcon, CheckCircleIcon } from "lucide-react";
 
 export default function BookDemoPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [bookingId, setBookingId] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -25,10 +28,22 @@ export default function BookDemoPage() {
     time: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, this would hit the backend or a calendar API
-    setSubmitted(true);
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const { submitBooking } = await import("@/lib/api");
+      const result = await submitBooking(form);
+      setBookingId(result.booking_id);
+      setSubmitted(true);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setError(msg);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -46,10 +61,19 @@ export default function BookDemoPage() {
             <span className="font-medium text-gray-900">{form.email}</span>{" "}
             confirming your slot. See you there.
           </p>
+          {bookingId && (
+            <p className="mt-2 text-xs text-gray-400">
+              Reference: {bookingId.slice(0, 8)}…
+            </p>
+          )}
           <Button
             variant="outline"
             className="mt-6"
-            onClick={() => setSubmitted(false)}
+            onClick={() => {
+              setSubmitted(false);
+              setBookingId(null);
+              setForm({ name: "", email: "", company: "", phone: "", employees: "", date: "", time: "" });
+            }}
           >
             Book Another
           </Button>
@@ -179,10 +203,15 @@ export default function BookDemoPage() {
 
           <Button
             type="submit"
-            className="w-full h-11 bg-[#2563eb] text-white hover:bg-[#2563eb]/90"
+            disabled={submitting}
+            className="w-full h-11 bg-[#2563eb] text-white hover:bg-[#2563eb]/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Confirm Booking
+            {submitting ? "Submitting…" : "Confirm Booking"}
           </Button>
+
+          {error && (
+            <p className="text-center text-sm text-red-500">{error}</p>
+          )}
 
           <p className="text-center text-xs text-gray-400">
             No spam. We&apos;ll only use your details to arrange this demo.

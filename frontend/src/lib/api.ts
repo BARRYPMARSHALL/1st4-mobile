@@ -122,6 +122,16 @@ export interface DocumentData {
   content?: string;
 }
 
+export interface BookingData {
+  name: string;
+  email: string;
+  company: string;
+  phone?: string;
+  employees?: string;
+  date: string;
+  time: string;
+}
+
 export async function registerClient(data: RegisterClientData): Promise<{ client_id: string }> {
   return apiFetch('/api/client/register', {
     method: 'POST',
@@ -196,4 +206,17 @@ export async function downloadReport(id: string): Promise<Blob> {
   const res = await fetch(`${API_BASE}/api/client/${id}/download-report`);
   if (!res.ok) throw new Error('Download failed');
   return res.blob();
+}
+
+export interface BookingResponse {
+  status: string;
+  message: string;
+  booking_id: string;
+}
+
+export async function submitBooking(data: BookingData): Promise<BookingResponse> {
+  return apiFetch('/api/book', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
 }
