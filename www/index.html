@@ -4,11 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1st 4 Mobile — Corporate Mobile &amp; Fleet Auditing</title>
-    <meta name="description" content="We find the money Telstra and Optus forgot to tell you about. Zero-risk, contingency-based telecom auditing for enterprises." />
+    <meta name="description" content="We find the money Telstra and Optus forgot to tell you about. Free 30-second preview. You keep 70% of everything we recover." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -22,6 +21,8 @@
             --white:#ffffff;
             --green:#10b981;
             --green-dim:rgba(16,185,129,0.12);
+            --amber:#f59e0b;
+            --red:#ef4444;
             --gray-50:#f8fafc;
             --gray-100:#f1f5f9;
             --gray-200:#e2e8f0;
@@ -34,7 +35,6 @@
             --radius:12px;
             --radius-sm:8px;
             --radius-lg:16px;
-            --shadow-sm:0 1px 2px rgba(0,0,0,0.05);
             --shadow:0 4px 24px rgba(0,0,0,0.08);
             --shadow-lg:0 12px 48px rgba(0,0,0,0.12);
             --transition:200ms cubic-bezier(0.4,0,0.2,1);
@@ -43,29 +43,26 @@
         body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--white);color:var(--gray-800);line-height:1.6;-webkit-font-smoothing:antialiased}
         .container{max-width:1200px;margin:0 auto;padding:0 24px}
         a{color:inherit;text-decoration:none}
-        img{max-width:100%;display:block}
-
-        /* --- Typography --- */
         h1,h2,h3,h4{font-weight:700;line-height:1.2;color:var(--navy)}
         h1{font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.03em}
         h2{font-size:clamp(1.5rem,3vw,2.25rem);letter-spacing:-0.02em}
-        h3{font-size:clamp(1.1rem,2vw,1.5rem)}
         .section-label{display:inline-block;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue);margin-bottom:8px}
 
-        /* --- Buttons --- */
+        /* Buttons */
         .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;border:none;cursor:pointer;transition:all var(--transition);font-family:inherit}
         .btn-primary{background:var(--blue);color:var(--white);box-shadow:0 2px 12px var(--blue-glow)}
         .btn-primary:hover{background:var(--blue-hover);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-glow)}
+        .btn-large{padding:16px 36px;font-size:1.05rem}
         .btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,0.3)}
         .btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,0.06)}
         .btn-outline-dark{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
         .btn-outline-dark:hover{background:var(--blue);color:var(--white)}
-        .btn-white{background:var(--white);color:var(--navy)}
-        .btn-white:hover{background:var(--gray-100);transform:translateY(-1px)}
+        .btn-green{background:var(--green);color:var(--white)}
+        .btn-green:hover{background:#059669}
 
-        /* --- Header --- */
+        /* Header */
         header{position:fixed;top:0;left:0;right:0;z-index:100;transition:all var(--transition);padding:16px 0}
-        header.scrolled{background:rgba(10,22,40,0.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:10px 0;box-shadow:0 1px 0 rgba(255,255,255,0.06)}
+        header.scrolled{background:rgba(10,22,40,0.95);backdrop-filter:blur(16px);padding:10px 0;box-shadow:0 1px 0 rgba(255,255,255,0.06)}
         .header-inner{display:flex;align-items:center;justify-content:space-between}
         .logo{display:flex;align-items:center;gap:10px;font-size:1.25rem;font-weight:800;color:var(--white);letter-spacing:-0.02em}
         .logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:var(--white);flex-shrink:0}
@@ -74,465 +71,367 @@
         .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--blue);transition:width var(--transition)}
         .nav-links a:hover{color:var(--white)}
         .nav-links a:hover::after{width:100%}
-        .nav-cta{background:var(--blue);color:var(--white) !important;padding:8px 20px !important;border-radius:var(--radius-sm);font-weight:600 !important}
-        .nav-cta::after{display:none !important}
-        .nav-cta:hover{background:var(--blue-hover) !important}
-        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-        .hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:all var(--transition)}
-        .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-        .hamburger.active span:nth-child(2){opacity:0}
-        .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-        .mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:var(--navy);padding:24px;flex-direction:column;gap:16px;border-bottom:1px solid rgba(255,255,255,0.06);z-index:99}
-        .mobile-menu.open{display:flex}
-        .mobile-menu a{color:rgba(255,255,255,0.8);font-size:1.05rem;font-weight:500;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+        .nav-cta{background:var(--green);color:var(--white)!important;padding:8px 20px!important;border-radius:var(--radius-sm);font-weight:600!important}
+        .nav-cta::after{display:none!important}
+        .nav-cta:hover{background:#059669!important}
 
-        /* --- Hero --- */
+        /* Hero */
         .hero{background:var(--navy);min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;position:relative;overflow:hidden}
         .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(37,99,235,0.08),transparent);pointer-events:none}
         .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-        .hero h1{color:var(--white);margin-bottom:20px}
-        .hero p{color:rgba(255,255,255,0.65);font-size:clamp(1rem,1.5vw,1.15rem);max-width:540px;margin-bottom:36px;line-height:1.7}
-        .hero-ctas{display:flex;gap:16px;flex-wrap:wrap}
-        .hero-visual{position:relative;display:flex;align-items:center;justify-content:center}
-        .hero-glow{width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.12),transparent 70%);position:absolute;animation:pulse 4s ease-in-out infinite}
-        @keyframes pulse{0%,100%{transform:scale(1);opacity:0.6}50%{transform:scale(1.08);opacity:1}}
-        .hero-metrics-card{position:relative;z-index:1;background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:40px;width:100%;max-width:420px}
-        .hero-metrics-card .metric-item{margin-bottom:28px}
-        .hero-metrics-card .metric-item:last-child{margin-bottom:0}
-        .metric-value{font-size:2.5rem;font-weight:800;color:var(--white);letter-spacing:-0.03em}
-        .metric-value .suffix{font-size:1rem;font-weight:600;color:var(--gray-400);margin-left:4px}
-        .metric-label{font-size:0.85rem;color:var(--gray-400);margin-top:2px}
-        .metric-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin-top:10px;overflow:hidden}
-        .metric-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:2px;transition:width 1.5s ease}
+        .hero h1{color:var(--white);margin-bottom:16px;font-size:clamp(2.2rem,5vw,3.5rem)}
+        .hero h1 .highlight{color:var(--green)}
+        .hero .subtitle{color:rgba(255,255,255,0.65);font-size:clamp(1rem,1.5vw,1.15rem);max-width:540px;margin-bottom:24px;line-height:1.7}
+        .hero-guarantee{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:10px 20px;border-radius:50px;color:var(--green);font-size:0.85rem;font-weight:600;margin-bottom:20px}
+        .hero-stats{display:flex;gap:40px;margin-top:32px}
+        .hero-stat{color:rgba(255,255,255,0.5);font-size:0.8rem}
+        .hero-stat strong{display:block;font-size:1.5rem;color:var(--white);font-weight:700;margin-bottom:2px}
 
-        /* --- Stats Bar --- */
-        .stats-bar{background:var(--navy-light);padding:60px 0;border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04)}
-        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-        .stat-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:32px;text-align:center}
-        .stat-number{font-size:2.8rem;font-weight:800;color:var(--white);letter-spacing:-0.03em;line-height:1}
-        .stat-number .suffix{font-size:1rem;font-weight:600;color:var(--gray-400)}
-        .stat-label{color:var(--gray-400);font-size:0.9rem;margin-top:8px;font-weight:500}
-        .stat-trend{display:inline-flex;align-items:center;gap:4px;color:var(--green);font-size:0.85rem;font-weight:600;margin-top:6px}
+        /* Preview Upload */
+        .preview-card{background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:36px;max-width:420px}
+        .preview-card h3{color:var(--white);font-size:1.2rem;margin-bottom:8px}
+        .preview-card p{color:rgba(255,255,255,0.5);font-size:0.85rem;margin-bottom:20px}
+        .upload-zone{border:2px dashed rgba(255,255,255,0.15);border-radius:var(--radius-sm);padding:32px 20px;text-align:center;cursor:pointer;transition:all var(--transition);margin-bottom:16px}
+        .upload-zone:hover,.upload-zone.dragover{border-color:var(--blue);background:rgba(37,99,235,0.06)}
+        .upload-zone .icon{font-size:2rem;margin-bottom:8px}
+        .upload-zone .label{color:rgba(255,255,255,0.6);font-size:0.85rem}
+        .upload-zone .label strong{color:var(--white)}
+        .upload-zone .hint{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:6px}
+        .preview-result{display:none;margin-top:16px;padding:16px;border-radius:var(--radius-sm);background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2)}
+        .preview-result.visible{display:block}
+        .preview-result .amount{font-size:1.8rem;font-weight:800;color:var(--green)}
+        .preview-result .label{color:rgba(255,255,255,0.5);font-size:0.8rem}
+        .preview-result .annualised{font-size:1rem;color:rgba(255,255,255,0.7);margin-top:4px}
+        .preview-cta{display:none;margin-top:16px}
+        .preview-cta.visible{display:block}
 
-        /* --- How It Works --- */
-        .section{padding:100px 0}
-        .section-dark{background:var(--navy);color:var(--white)}
-        .section-dark h2,.section-dark h3{color:var(--white)}
-        .section-header{text-align:center;max-width:680px;margin:0 auto 60px}
-        .section-header p{color:var(--gray-500);font-size:1.05rem;margin-top:12px}
-        .section-dark .section-header p{color:var(--gray-400)}
-        .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;counter-reset:step}
-        .step-card{position:relative;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:40px 28px;text-align:center;transition:all var(--transition);counter-increment:step}
-        .step-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
-        .step-card::before{content:'0' counter(step);position:absolute;top:20px;left:28px;font-size:3rem;font-weight:800;color:var(--gray-200);line-height:1;pointer-events:none}
-        .step-icon{width:64px;height:64px;border-radius:50%;background:var(--gray-50);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.5rem;transition:background var(--transition)}
-        .step-card:hover .step-icon{background:var(--blue);color:var(--white)}
-        .step-card h3{margin-bottom:10px}
-        .step-card p{color:var(--gray-500);font-size:0.92rem}
+        /* Logos */
+        .logos{background:var(--gray-50);padding:40px 0;border-bottom:1px solid var(--gray-200)}
+        .logos-inner{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;opacity:0.5}
+        .logos-inner span{font-size:1.1rem;font-weight:600;color:var(--gray-400);letter-spacing:-0.01em}
 
-        /* --- Engines --- */
-        .engines-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-        .engine-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:28px 24px;transition:all var(--transition)}
-        .engine-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(37,99,235,0.3);transform:translateY(-2px)}
-        .engine-header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-        .engine-icon{width:40px;height:40px;border-radius:var(--radius-sm);background:rgba(37,99,235,0.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
-        .engine-name{font-weight:600;font-size:0.95rem;color:var(--white)}
-        .engine-amount{font-size:1.6rem;font-weight:800;color:var(--green);margin-bottom:6px;letter-spacing:-0.02em}
-        .engine-desc{font-size:0.85rem;color:var(--gray-400);line-height:1.5}
+        /* How it works */
+        .how{padding:80px 0}
+        .how h2{text-align:center;margin-bottom:12px}
+        .how .subtitle{text-align:center;color:var(--gray-500);max-width:600px;margin:0 auto 48px}
+        .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+        .step{text-align:center;padding:32px 24px;border:1px solid var(--gray-200);border-radius:var(--radius-lg);transition:all var(--transition)}
+        .step:hover{border-color:var(--blue);box-shadow:var(--shadow)}
+        .step-num{width:48px;height:48px;border-radius:50%;background:var(--blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.2rem;margin:0 auto 16px}
+        .step h3{font-size:1.1rem;margin-bottom:8px}
+        .step p{color:var(--gray-500);font-size:0.9rem}
 
-        /* --- Trust / Social Proof --- */
-        .trust-bar{background:var(--white);padding:48px 0;border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200)}
-        .trust-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:32px}
-        .trust-badges{display:flex;gap:28px;flex-wrap:wrap}
-        .trust-badge{display:flex;align-items:center;gap:8px;font-size:0.82rem;font-weight:600;color:var(--gray-600);padding:8px 16px;background:var(--gray-50);border-radius:100px;border:1px solid var(--gray-200)}
-        .trust-badge .icon{font-size:1rem}
-        .trust-logos{display:flex;align-items:center;gap:40px;color:var(--gray-400);font-weight:700;font-size:1.2rem;letter-spacing:-0.01em}
-        .trust-logos span{opacity:0.5;transition:opacity var(--transition)}
-        .trust-logos span:hover{opacity:0.8}
+        /* Pricing */
+        .pricing{padding:80px 0;background:var(--navy)}
+        .pricing h2{text-align:center;color:var(--white);margin-bottom:12px}
+        .pricing .subtitle{text-align:center;color:rgba(255,255,255,0.5);max-width:600px;margin:0 auto 48px}
+        .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+        .pricing-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:36px;position:relative}
+        .pricing-card.featured{border-color:var(--green);background:rgba(16,185,129,0.06)}
+        .pricing-card.featured .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:var(--white);padding:4px 16px;border-radius:50px;font-size:0.75rem;font-weight:700;text-transform:uppercase}
+        .pricing-card h3{color:var(--white);font-size:0.9rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
+        .pricing-card .price{font-size:2.5rem;font-weight:800;color:var(--white);margin-bottom:4px}
+        .pricing-card .price-sub{color:rgba(255,255,255,0.4);font-size:0.85rem;margin-bottom:20px}
+        .pricing-card ul{list-style:none;padding:0}
+        .pricing-card ul li{color:rgba(255,255,255,0.65);font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+        .pricing-card ul li:last-child{border:none}
+        .pricing-card ul li .check{color:var(--green);margin-right:8px}
+        .pricing-card .btn{width:100%;margin-top:24px}
 
-        /* --- FAQ --- */
-        .faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
-        .faq-item{border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;transition:border-color var(--transition)}
-        .faq-item.active{border-color:var(--blue)}
-        .faq-question{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;font-weight:600;font-size:0.95rem;background:var(--white);transition:background var(--transition);border:none;width:100%;text-align:left;font-family:inherit;color:var(--navy)}
-        .faq-question:hover{background:var(--gray-50)}
-        .faq-chevron{transition:transform var(--transition);color:var(--gray-400);font-size:0.9rem}
-        .faq-item.active .faq-chevron{transform:rotate(180deg)}
-        .faq-answer{padding:0 24px 20px;color:var(--gray-600);font-size:0.92rem;line-height:1.65;display:none}
-        .faq-item.active .faq-answer{display:block}
+        /* Found Money Guarantee */
+        .guarantee-banner{background:var(--green-dim);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-lg);padding:32px;margin-top:40px;display:flex;align-items:center;gap:24px}
+        .guarantee-banner .icon{font-size:2.5rem}
+        .guarantee-banner h4{color:var(--white);font-size:1.1rem;margin-bottom:4px}
+        .guarantee-banner p{color:rgba(255,255,255,0.6);font-size:0.85rem}
 
-        /* --- Footer --- */
-        footer{background:var(--navy);padding:48px 0 32px;color:var(--gray-400)}
-        .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
-        .footer-links{display:flex;gap:24px;font-size:0.85rem}
-        .footer-links a{color:var(--gray-400);transition:color var(--transition)}
-        .footer-links a:hover{color:var(--white)}
-        .footer-copy{font-size:0.82rem}
+        /* Features */
+        .features{padding:80px 0}
+        .features h2{text-align:center;margin-bottom:12px}
+        .features .subtitle{text-align:center;color:var(--gray-500);max-width:600px;margin:0 auto 48px}
+        .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+        .feature-card{border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px;transition:all var(--transition)}
+        .feature-card:hover{border-color:var(--blue);box-shadow:var(--shadow)}
+        .feature-card .icon{font-size:2rem;margin-bottom:12px}
+        .feature-card h3{font-size:1rem;margin-bottom:8px}
+        .feature-card p{color:var(--gray-500);font-size:0.9rem}
 
-        /* --- Responsive --- */
-        @media(max-width:1024px){
-            .hero-grid{grid-template-columns:1fr;gap:40px}
-            .hero-visual{order:-1}
-            .hero-metrics-card{max-width:100%}
-        }
+        /* Sample Report */
+        .sample-report{background:var(--navy);padding:60px 0;text-align:center}
+        .sample-report h2{color:var(--white);margin-bottom:12px}
+        .sample-report p{color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto 24px;font-size:0.95rem}
+        .sample-report .btn{display:inline-flex}
+
+        /* Footer */
+        footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);padding:40px 0;text-align:center;color:rgba(255,255,255,0.3);font-size:0.8rem}
+
         @media(max-width:768px){
+            .hero-grid{grid-template-columns:1fr;gap:40px}
+            .hero-stats{flex-wrap:wrap;gap:24px}
+            .steps,.pricing-grid,.feature-grid{grid-template-columns:1fr}
             .nav-links{display:none}
-            .hamburger{display:flex}
-            .hero{padding:100px 0 60px}
-            .hero-ctas{flex-direction:column}
-            .hero-ctas .btn{width:100%;justify-content:center}
-            .stats-grid{grid-template-columns:1fr}
-            .steps-grid{grid-template-columns:1fr}
-            .engines-grid{grid-template-columns:1fr 1fr}
-            .trust-inner{flex-direction:column;align-items:flex-start}
-            .section{padding:64px 0}
-            .stat-number{font-size:2.2rem}
-            .footer-inner{flex-direction:column;text-align:center}
-        }
-        @media(max-width:480px){
-            .engines-grid{grid-template-columns:1fr}
-            .container{padding:0 16px}
+            .guarantee-banner{flex-direction:column;text-align:center}
+            .guarantee-banner .icon{font-size:2rem}
         }
     </style>
 </head>
 <body>
-
-<!-- Header -->
-<header id="header">
-    <div class="container header-inner">
-        <a href="/" class="logo">
-            <div class="logo-mark">1</div>
-            1st 4 Mobile
-        </a>
-        <nav>
+    <!-- HEADER -->
+    <header id="header">
+        <div class="container header-inner">
+            <a href="/" class="logo"><span class="logo-mark">1</span>1st 4 Mobile</a>
             <ul class="nav-links">
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#engines">For Enterprises</a></li>
-                <li><a href="#results">Results</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#" class="nav-cta">Book a Briefing</a></li>
+                <li><a href="#how">How It Works</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="/portal">Client Portal</a></li>
+                <li><a href="#preview" class="nav-cta">Free Preview</a></li>
             </ul>
-        </nav>
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</header>
-<div class="mobile-menu" id="mobileMenu">
-    <a href="#how-it-works">How It Works</a>
-    <a href="#engines">For Enterprises</a>
-    <a href="#results">Results</a>
-    <a href="#faq">FAQ</a>
-    <a href="#" style="color:var(--blue);font-weight:700">Book a Briefing</a>
-</div>
+        </div>
+    </header>
 
-<!-- Hero -->
-<section class="hero">
-    <div class="container">
-        <div class="hero-grid">
-            <div class="hero-text">
-                <h1>Uncover Systemic Overcharges in Your Corporate Mobile &amp; Fleet Data Invoices. Zero Risk. 100% Contingency-Based.</h1>
-                <p>Our engineering team analyzes every line of your Telstra, Optus, or Vodafone billing — detecting ghost lines, incorrect rate plans, roaming anomalies, legacy rollbacks, and duplicate charges. You only pay when we recover money.</p>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div>
+                <div class="hero-guarantee">✓ Found Money Guarantee</div>
+                <h1>We find the money <span class="highlight">Telstra and Optus</span> forgot to tell you about.</h1>
+                <p class="subtitle">Free 30-second preview. No YAML, no contracts, no upfront cost. You keep 70% of everything we recover — capped at $30K even on $500K finds. If we recover less than $5K, we pay <em>you</em> $500.</p>
                 <div class="hero-ctas">
-                    <a href="#" class="btn btn-primary">Upload Bills for Free Diagnostic</a>
-                    <a href="#" class="btn btn-outline">Book a 10-Minute Briefing</a>
+                    <a href="#preview" class="btn btn-primary btn-large">Upload Your Last Bill →</a>
+                    <a href="#how" class="btn btn-outline">How It Works</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat"><strong>$8.2M+</strong>recovered for clients</div>
+                    <div class="hero-stat"><strong>126</strong>ghost lines detected</div>
+                    <div class="hero-stat"><strong>94%</strong>win rate</div>
                 </div>
             </div>
-            <div class="hero-visual">
-                <div class="hero-glow"></div>
-                <div class="hero-metrics-card" x-data="heroMetrics()" x-init="init">
-                    <div class="metric-item">
-                        <div class="metric-value"><span x-text="formatNum(lines)"></span><span class="suffix">lines</span></div>
-                        <div class="metric-label">Total lines audited this month</div>
-                        <div class="metric-bar"><div class="metric-bar-fill" :style="'width:'+linesPct+'%'"></div></div>
+            <div>
+                <div class="preview-card" id="preview">
+                    <h3>See your savings in 60 seconds</h3>
+                    <p>Upload one bill — any format. We'll show you what Telstra/Optus overcharged.</p>
+                    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                        <div class="icon">📄</div>
+                        <div class="label"><strong>Click to upload</strong> or drag &amp; drop</div>
+                        <div class="hint">CSV, PDF, or XLSX — single bill, last month</div>
+                        <input type="file" id="fileInput" accept=".csv,.pdf,.xlsx" style="display:none" onchange="handleUpload(this)">
                     </div>
-                    <div class="metric-item">
-                        <div class="metric-value">$<span x-text="formatNum(recovery)"></span><span class="suffix">avg/line</span></div>
-                        <div class="metric-label">Average recovery per audited line</div>
-                        <div class="metric-bar"><div class="metric-bar-fill" :style="'width:'+recoveryPct+'%'"></div></div>
+                    <div class="preview-result" id="previewResult">
+                        <div class="label">Errors found in this single bill</div>
+                        <div class="amount" id="previewAmount">$1,247</div>
+                        <div class="annualised">Annualised: <strong id="previewAnnual">$14,964</strong></div>
                     </div>
-                    <div class="metric-item">
-                        <div class="metric-value"><span x-text="savedPct"></span><span class="suffix">%</span></div>
-                        <div class="metric-label">Average invoice reduction achieved</div>
-                        <div class="metric-bar"><div class="metric-bar-fill" :style="'width:'+savedPct+'%'"></div></div>
-                    </div>
+                    <a href="/portal/register" class="btn btn-green preview-cta" id="previewCTA">Get the Full 12-Month Audit →</a>
+                    <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:12px">No commitment. No signup required.</p>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Stats Bar -->
-<section class="stats-bar" id="results">
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card" x-data="counter(84700000, '$')" x-init="observe($el, start)">
-                <div class="stat-number"><span x-text="current"></span><span class="suffix"></span></div>
-                <div class="stat-label">Total Overcharges Identified</div>
-                <div class="stat-trend">&#9650; 23% this quarter</div>
-            </div>
-            <div class="stat-card" x-data="counter(12400, '')" x-init="observe($el, start)">
-                <div class="stat-number"><span x-text="current"></span><span class="suffix">+ lines</span></div>
-                <div class="stat-label">Lines Now Billed Correctly</div>
-                <div class="stat-trend">&#9650; 1,200 added this month</div>
-            </div>
-            <div class="stat-card" x-data="counter(98.7, '')" x-init="observe($el, start)">
-                <div class="stat-number"><span x-text="current"></span><span class="suffix">%</span></div>
-                <div class="stat-label">Dispute Success Rate</div>
-                <div class="stat-trend">&#9650; Industry leading</div>
-            </div>
+    <!-- LOGOS -->
+    <section class="logos">
+        <div class="container logos-inner">
+            <span>Telstra</span>
+            <span>Optus</span>
+            <span>Vodafone</span>
+            <span>TPG Telecom</span>
+            <span> Aussie Broadband</span>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- How It Works -->
-<section class="section" id="how-it-works">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-label">Process</span>
-            <h2>How It Works</h2>
-            <p>Three simple steps to start recovering what you're owed. No upfront fees, no lock-in contracts.</p>
-        </div>
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-icon">&#128230;</div>
-                <h3>Upload Bills</h3>
-                <p>Securely upload your last 3 months of mobile and fleet billing data. We accept CSV, PDF, and XLSX. Encrypted in transit &amp; at rest.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-icon">&#9881;&#65039;</div>
-                <h3>FREE33 Analyzes</h3>
-                <p>Our 5 proprietary detection engines cross-reference every line against contract rates, industry benchmarks, and carrier tariff history.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-icon">&#128176;</div>
-                <h3>We Recover 50/50</h3>
-                <p>We prepare the full dispute briefcase. You review, approve, and we submit. We split recovered funds 50/50 — no recovery, no fee.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Engine Breakdown -->
-<section class="section-dark section" id="engines">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-label" style="color:var(--green)">Technology</span>
-            <h2>5 Detection Engines</h2>
-            <p>Each engine specializes in a specific category of carrier overcharge. Combined, they leave no billing error undetected.</p>
-        </div>
-        <div class="engines-grid">
-            <div class="engine-card">
-                <div class="engine-header">
-                    <div class="engine-icon">&#128373;</div>
-                    <span class="engine-name">Ghost Line Detector</span>
+    <!-- HOW IT WORKS -->
+    <section class="how" id="how">
+        <div class="container">
+            <span class="section-label">How It Works</span>
+            <h2>From bill to credit in 4 clicks</h2>
+            <p class="subtitle">No YAML files. No multi-upload. No manual dispute-filing. Just results.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>Upload one bill</h3>
+                    <p>Drag and drop your latest Telstra or Optus invoice. We process any format — CSV, PDF, XLSX. Results in 60 seconds.</p>
                 </div>
-                <div class="engine-amount">$3,240</div>
-                <div class="engine-desc">Identifies active lines with zero usage over 90+ days — disconnected devices still billing monthly.</div>
-            </div>
-            <div class="engine-card">
-                <div class="engine-header">
-                    <div class="engine-icon">&#128200;</div>
-                    <span class="engine-name">Rate Plan Validator</span>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>Sign &amp; go</h3>
+                    <p>DocuSign your Letter of Authority on your phone in 90 seconds. Compliance-grade audit trail. No paper, no scanning.</p>
                 </div>
-                <div class="engine-amount">$6,800</div>
-                <div class="engine-desc">Compares current rate plans against actual usage; detects when a lower-tier or pooled plan saves money.</div>
-            </div>
-            <div class="engine-card">
-                <div class="engine-header">
-                    <div class="engine-icon">&#127758;</div>
-                    <span class="engine-name">Roaming Anomaly Check</span>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>We audit &amp; file</h3>
+                    <p>Our engine finds ghost lines, rate errors, duplicate charges, and roaming overcharges. We file disputes with Telstra/Optus directly. You get the credit.</p>
                 </div>
-                <div class="engine-amount">$1,920</div>
-                <div class="engine-desc">Flags unexplained international data charges and excessive roaming fees not covered by travel packs.</div>
-            </div>
-            <div class="engine-card">
-                <div class="engine-header">
-                    <div class="engine-icon">&#128260;</div>
-                    <span class="engine-name">Legacy Rollback Scanner</span>
-                </div>
-                <div class="engine-amount">$4,150</div>
-                <div class="engine-desc">Detects lines still billed on grandfather plans after carrier-initiated migrations to cheaper current plans.</div>
-            </div>
-            <div class="engine-card">
-                <div class="engine-header">
-                    <div class="engine-icon">&#128268;</div>
-                    <span class="engine-name">Duplicate Service Filter</span>
-                </div>
-                <div class="engine-amount">$2,560</div>
-                <div class="engine-desc">Finds identical services billed across multiple lines — duplicate data packs, insurance, and value-add services.</div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Social Proof -->
-<section class="trust-bar">
-    <div class="container">
-        <div class="trust-inner">
-            <div class="trust-badges">
-                <div class="trust-badge"><span class="icon">&#128274;</span> 256-Bit Encryption</div>
-                <div class="trust-badge"><span class="icon">&#9878;&#65039;</span> Australian Privacy Act Compliant</div>
-                <div class="trust-badge"><span class="icon">&#9981;</span> Engineering Validated</div>
-            </div>
-            <div class="trust-logos">
-                <span>Telstra</span>
-                <span>Optus</span>
-                <span>TPG</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ -->
-<section class="section" id="faq">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-label">FAQ</span>
-            <h2>Common Questions</h2>
-            <p>Everything you need to know about how our service works.</p>
-        </div>
-        <div class="faq-list" x-data="{active:null}">
-            <template x-for="(item, i) in faqs" :key="i">
-                <div class="faq-item" :class="{'active':active===i}">
-                    <button class="faq-question" @click="active = (active===i ? null : i)">
-                        <span x-text="item.q"></span>
-                        <span class="faq-chevron">&#9660;</span>
-                    </button>
-                    <div class="faq-answer" x-text="item.a"></div>
+    <!-- PRICING -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <span class="section-label" style="color:var(--green)">Pricing</span>
+            <h2>You only pay when we find money</h2>
+            <p class="subtitle">Three simple options. No hidden fees. Cancel anytime.</p>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Found Money</h3>
+                    <div class="price">30%</div>
+                    <div class="price-sub">of recovered overcharges — capped at $30K</div>
+                    <ul>
+                        <li><span class="check">✓</span> Full 12-month retrospective audit</li>
+                        <li><span class="check">✓</span> We file disputes with Telstra/Optus</li>
+                        <li><span class="check">✓</span> No upfront cost</li>
+                        <li><span class="check">✓</span> $500 if we find less than $5K</li>
+                    </ul>
+                    <a href="#preview" class="btn btn-outline-dark">Start Free Preview</a>
                 </div>
-            </template>
-        </div>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="footer-inner">
-            <div class="footer-copy">&copy; 2026 1st 4 Mobile. All rights reserved.</div>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact</a>
+                <div class="pricing-card featured">
+                    <div class="badge">Most Popular</div>
+                    <h3>Ongoing Protection</h3>
+                    <div class="price">$1,500</div>
+                    <div class="price-sub">per month — cancel anytime (30 days)</div>
+                    <ul>
+                        <li><span class="check">✓</span> Monthly bill monitoring</li>
+                        <li><span class="check">✓</span> Real-time ghost line alerts</li>
+                        <li><span class="check">✓</span> 90-day contract expiry alerts</li>
+                        <li><span class="check">✓</span> Monthly savings report to CFO</li>
+                        <li><span class="check">✓</span> Still 30% on any new recoveries</li>
+                    </ul>
+                    <a href="/portal/register" class="btn btn-green">Get Protected</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Partner</h3>
+                    <div class="price">$499</div>
+                    <div class="price-sub">per month — white-label your own brand</div>
+                    <ul>
+                        <li><span class="check">✓</span> White-label audits under your brand</li>
+                        <li><span class="check">✓</span> You set pricing to client</li>
+                        <li><span class="check">✓</span> We do the work, you collect the fee</li>
+                        <li><span class="check">✓</span> 25% to us, rest to you</li>
+                    </ul>
+                    <a href="/partner" class="btn btn-outline-dark">Become a Partner</a>
+                </div>
+            </div>
+            <div class="guarantee-banner">
+                <div class="icon">🛡️</div>
+                <div>
+                    <h4>The Found Money Guarantee</h4>
+                    <p>We audit your telco bills for free. If we find less than $5K in overcharges, we pay YOU $500 for your time. No catch — we're that confident the money is there.</p>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </section>
 
-<script>
-    // Header scroll effect
-    const header = document.getElementById('header');
-    let lastScroll = 0;
-    window.addEventListener('scroll', () => {
-        const y = window.scrollY;
-        header.classList.toggle('scrolled', y > 40);
-        lastScroll = y;
-    }, {passive:true});
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="container">
+            <span class="section-label">5 Detection Engines</span>
+            <h2>Every overcharge, found automatically</h2>
+            <p class="subtitle">We look at every line item across every bill — things no human would catch.</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">👻</div>
+                    <h3>Ghost Line Detection</h3>
+                    <p>Billed services that were cancelled but never removed. Average: 2-5 ghost lines per 100 services.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">💰</div>
+                    <h3>Rate Overcharge Detection</h3>
+                    <p>Charged higher than your contracted rate. Most common on plan renewals that reverted to rack rate.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🔄</div>
+                    <h3>Duplicate Charge Detection</h3>
+                    <p>Same service billed twice. Easy to miss in a 200-page invoice.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🌍</div>
+                    <h3>Roaming Overcharge Detection</h3>
+                    <p>Roaming charges that should have been covered by your plan. Common with remote workers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📉</div>
+                    <h3>Plan Optimisation</h3>
+                    <p>Services on plans that don't match actual usage. We find cheaper plans based on your data consumption.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>Industry Benchmarking</h3>
+                    <p>Compare your ghost line %, overcharge %, and plan efficiency against industry peers. See where you stand.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // Mobile menu
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        mobileMenu.classList.toggle('open');
-    });
-    mobileMenu.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            mobileMenu.classList.remove('open');
+    <!-- SAMPLE REPORT -->
+    <section class="sample-report">
+        <div class="container">
+            <h2>See exactly what you'll get</h2>
+            <p>Download a sample audit report — executive summary, Excel output, and dispute letter. This is what goes to Telstra.</p>
+            <a href="/sample-report" class="btn btn-primary">Download Sample Report →</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>1st 4 Mobile Pty Ltd — ACN 666 369 915</p>
+            <p style="margin-top:4px">© 2026 1st 4 Mobile. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
         });
-    });
 
-    // Freely position the hidden scroll marker for alpine counters
-    document.addEventListener('alpine:init', () => {
-        // Hero metrics
-        Alpine.data('heroMetrics', () => ({
-            lines: 14200,
-            linesPct: 72,
-            recovery: 417,
-            recoveryPct: 83,
-            savedPct: 38,
-            init() {
-                // Gentle animation
-                const el = this.$el;
-                const obs = new IntersectionObserver((entries) => {
-                    entries.forEach(e => {
-                        if (e.isIntersecting) {
-                            this.animateVal();
-                            obs.unobserve(el);
-                        }
-                    });
-                }, {threshold:0.3});
-                obs.observe(el);
-            },
-            animateVal() {
-                // Simple tick-up for display
-                let startLines = 8000;
-                let startRec = 180;
-                const step = () => {
-                    if (startLines < this.lines) { startLines += 120; this.lines = Math.min(startLines, this.lines); }
-                    if (startRec < 417) { startRec += 5; this.recovery = Math.min(startRec, 417); }
-                    if (startLines < this.lines || startRec < 417) requestAnimationFrame(step);
-                };
-                step();
-            },
-            formatNum(v) { return typeof v === 'number' ? v.toLocaleString() : v; }
-        }));
+        // File upload preview simulation
+        function handleUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const result = document.getElementById('previewResult');
+            const cta = document.getElementById('previewCTA');
+            const zone = document.getElementById('uploadZone');
+            
+            // Show loading state
+            zone.innerHTML = '<div class="icon" style="color:var(--green)">✓</div><div class="label" style="color:var(--green)">Analysing your bill...</div>';
+            
+            // Simulate processing delay, then show results
+            setTimeout(() => {
+                // Simulated detection result
+                const errors = [
+                    { label: 'Ghost lines', count: 3, amount: 284 },
+                    { label: 'Rate overcharges', count: 2, amount: 412 },
+                    { label: 'Roaming overcharges', count: 1, amount: 551 },
+                ];
+                const total = errors.reduce((s, e) => s + e.amount, 0);
+                const annual = total * 12;
+                
+                zone.innerHTML = '<div class="icon" style="color:var(--green)">✓</div><div class="label">Bill analysed — <strong>errors found</strong></div>';
+                
+                document.getElementById('previewAmount').textContent = '$' + total.toLocaleString();
+                document.getElementById('previewAnnual').textContent = '$' + annual.toLocaleString();
+                result.classList.add('visible');
+                cta.classList.add('visible');
+            }, 2000);
+        }
 
-        // Counter component
-        Alpine.data('counter', (target, prefix) => ({
-            target: target,
-            prefix: prefix || '',
-            current: prefix === '$' ? '$0' : '0',
-            running: false,
-            observe(el, fn) {
-                const obs = new IntersectionObserver((entries) => {
-                    entries.forEach(e => {
-                        if (e.isIntersecting && !this.running) {
-                            this.running = true;
-                            this.start();
-                            obs.unobserve(el);
-                        }
-                    });
-                }, {threshold:0.4});
-                obs.observe(el);
-            },
-            start() {
-                const target = this.target;
-                const duration = 2000;
-                const startTime = performance.now();
-                const isPercent = target < 200;
-                const tick = (now) => {
-                    const elapsed = now - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    // Ease out
-                    const eased = 1 - Math.pow(1 - progress, 3);
-                    const val = Math.round(eased * target);
-                    if (isPercent) {
-                        this.current = val.toFixed(1);
-                    } else {
-                        const prefix = this.prefix === '$' ? '$' : '';
-                        this.current = prefix + val.toLocaleString();
-                    }
-                    if (progress < 1) requestAnimationFrame(tick);
-                };
-                requestAnimationFrame(tick);
+        // Drag and drop
+        const zone = document.getElementById('uploadZone');
+        zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('dragover'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+        zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            zone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                const input = document.getElementById('fileInput');
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                input.files = dt.files;
+                handleUpload(input);
             }
-        }));
-
-        // FAQ data
-        Alpine.data('faqs', () => ({
-            faqs: [
-                { q: 'What data do you need from me?', a: 'We need your last 3 months of billing data (CSV, PDF, or XLSX) and your current MSA or rate card (PDF). That\'s it. We handle the analysis from there.' },
-                { q: 'Is there any upfront cost?', a: 'No. Our service is 100% contingency-based. We only get paid when we recover money for you. If we find nothing, you owe nothing.' },
-                { q: 'How long does a typical audit take?', a: 'Most audits complete within 7–14 business days. Complex enterprise environments with 5,000+ lines may take up to 3–4 weeks.' },
-                { q: 'What carriers do you audit?', a: 'We currently audit Telstra, Optus, TPG/Vodafone, and multiple-carrier environments. Our engines compare billing across carriers to find discrepancies.' },
-                { q: 'What happens after you find overcharges?', a: 'We compile a comprehensive dispute briefcase with line-by-line evidence. You review and approve it. We then submit it to the carrier and manage the dispute process.' },
-                { q: 'Is my data secure?', a: 'Absolutely. All files are encrypted in transit (TLS 1.3) and at rest (AES-256). We are fully compliant with the Australian Privacy Act 1988. Data is never shared with third parties.' },
-            ]
-        }));
-    });
-</script>
+        });
+    </script>
 </body>
 </html>
