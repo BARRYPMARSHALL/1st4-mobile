@@ -65,11 +65,13 @@ from backend.auth_routes import router as auth_router  # noqa: E402
 from backend.book_routes import router as book_router  # noqa: E402
 from backend.owner_routes import router as owner_router  # noqa: E402
 from backend.client_routes import router as client_router  # noqa: E402
+from backend.oauth_routes import router as oauth_router  # noqa: E402
 
 app.include_router(auth_router)
 app.include_router(book_router)
 app.include_router(owner_router)
 app.include_router(client_router)
+app.include_router(oauth_router)
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -276,6 +278,11 @@ async def root(request: Request):
 @app.get("/portal", response_class=HTMLResponse, include_in_schema=False)
 async def portal(request: Request):
     return _serve_html("portal.html", request)
+
+
+@app.get("/owner", response_class=HTMLResponse, include_in_schema=False)
+async def owner_page(request: Request):
+    return _serve_html("owner.html", request)
 
 
 @app.get("/dashboard/{client_id}", response_class=HTMLResponse, include_in_schema=False)

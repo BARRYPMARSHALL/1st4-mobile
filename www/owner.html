@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Owner Dashboard — 1st 4 Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f8fafc;color:#1e293b}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:#0a1628;padding:24px;overflow-y:auto;z-index:10}
+.sidebar .logo{color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:32px;display:flex;align-items:center;gap:8px}
+.sidebar .logo span{background:linear-gradient(135deg,#2563eb,#10b981);width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.9rem}
+.sidebar h4{color:rgba(255,255,255,0.3);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;margin:20px 0 8px}
+.sidebar a{display:block;color:rgba(255,255,255,0.6);padding:10px 12px;border-radius:6px;font-size:0.85rem;transition:all 0.15s;text-decoration:none}
+.sidebar a:hover,.sidebar a.active{color:#fff;background:rgba(255,255,255,0.06)}
+.main{margin-left:240px;padding:24px 32px}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.top-bar h1{font-size:1.4rem;font-weight:700;color:#0a1628}
+.top-bar .user{display:flex;align-items:center;gap:8px;color:#64748b;font-size:0.85rem}
+.top-bar .user img{width:32px;height:32px;border-radius:50%}
+
+/* North-star metric */
+.north-star{background:linear-gradient(135deg,#0a1628,#1a2744);border-radius:12px;padding:32px;color:#fff;margin-bottom:24px}
+.north-star .label{color:rgba(255,255,255,0.4);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em}
+.north-star .value{font-size:2.8rem;font-weight:800;color:#10b981;margin:4px 0}
+.north-star .sub{color:rgba(255,255,255,0.5);font-size:0.85rem}
+.north-star .sub span{color:#10b981;font-weight:600}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.card{background:#fff;border-radius:12px;padding:20px;border:1px solid #e2e8f0}
+.card h3{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;margin-bottom:12px;font-weight:600}
+.chart-container{position:relative;height:200px;width:100%}
+.chart-container-sm{height:140px}
+.pos{color:#10b981;font-weight:600}
+.neg{color:#ef4444;font-weight:600}
+
+/* Table */
+.table-wrap{overflow-x:auto;margin-bottom:24px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem}
+th{text-align:left;padding:12px 16px;background:#f1f5f9;color:#64748b;font-weight:600;font-size:0.75rem;text-transform:uppercase;border-bottom:1px solid #e2e8f0}
+td{padding:12px 16px;border-bottom:1px solid #e2e8f0}
+.status{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:50px;font-size:0.75rem;font-weight:600}
+.status.live{background:#dcfce7;color:#166534}
+.status.auditing{background:#fef9c3;color:#854d0e}
+.status.stalled{background:#fce4ec;color:#b71c1c}
+.health{gap:4px;display:flex;align-items:center}
+.health-dot{width:8px;height:8px;border-radius:50%}.health-dot.green{background:#10b981}.health-dot.amber{background:#f59e0b}.health-dot.red{background:#ef4444}
+.quick-actions{display:flex;gap:8px;flex-wrap:wrap}
+.quick-actions button{background:#f1f5f9;border:1px solid #e2e8f0;padding:8px 16px;border-radius:8px;font-size:0.8rem;cursor:pointer;transition:all 0.15s;font-family:inherit;color:#475569}
+.quick-actions button:hover{background:#e2e8f0;color:#0f172a}
+
+/* Partner leaderboard */
+.leaderboard{display:flex;flex-direction:column;gap:8px}
+.leaderboard-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:8px;background:#f8fafc;font-size:0.85rem}
+.leaderboard-item .rank{color:#64748b;font-weight:700;width:24px}
+.leaderboard-item .name{flex:1;font-weight:600}
+.leaderboard-item .rev{color:#10b981;font-weight:600}
+
+@media(max-width:768px){
+  .sidebar{display:none}.main{margin-left:0;padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="logo"><span>1</span>1st 4 Mobile</div>
+  <div style="border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:16px;margin-bottom:8px">
+    <div style="color:rgba(255,255,255,0.8);font-size:0.85rem;font-weight:600">barry@1st4.mobi</div>
+    <div style="color:rgba(255,255,255,0.3);font-size:0.75rem">Owner</div>
+  </div>
+  <h4>Dashboard</h4>
+  <a href="#" class="active">Overview</a>
+  <a href="#">Clients</a>
+  <a href="#">Audits</a>
+  <a href="#">Partners</a>
+  <h4>Actions</h4>
+  <a href="#" onclick="alert('New client form')">+ New Client</a>
+  <a href="#"> Send Quote</a>
+  <a href="#" onclick="alert('Follow up on disputes')"> Follow Up</a>
+  <h4>Account</h4>
+  <a href="/portal">Client Portal</a>
+  <a href="/">Website</a>
+  <a href="#" style="color:#ef4444" onclick="alert('Logged out')">Logout</a>
+</div>
+
+<div class="main">
+  <div class="top-bar">
+    <h1>Owner Dashboard</h1>
+    <div class="user">
+      <span>barry@1st4.mobi</span>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%232563eb'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-size='14' font-weight='600' font-family='Inter'%3EB%3C/text%3E%3C/svg%3E" alt="" />
+    </div>
+  </div>
+
+  <!-- NORTH-STAR METRIC -->
+  <div class="north-star">
+    <div class="label">Monthly Recurring Revenue (MRR)</div>
+    <div class="value">$38,500</div>
+    <div class="sub"><span>↑ 12%</span> vs last month · 21 active monitoring clients · $1,500 avg per client</div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Recurring Revenue</h3>
+      <div style="font-size:2rem;font-weight:800;color:#10b981">$38.5K</div>
+      <div style="color:#64748b;font-size:0.85rem;margin-top:4px">
+        <span class="pos">↑ $4,200</span> from last month
+      </div>
+      <div class="chart-container chart-container-sm" style="margin-top:12px">
+        <canvas id="mrrChart"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Revenue Mix</h3>
+      <div class="chart-container">
+        <canvas id="mixChart"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Lead Funnel</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;font-size:0.85rem"><span>Visitors</span><strong>3,842</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.85rem"><span>Preview started</span><strong>847 (22%)</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.85rem"><span>Preview completed</span><strong>512 (60%)</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.85rem"><span>Leads captured</span><strong>218 (43%)</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#10b981"><span>Audits booked</span><strong>47 (22%)</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#10b981"><span>Recoveries</span><strong>37 (79%)</strong></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Industry Breakdown</h3>
+      <div class="chart-container chart-container-sm">
+        <canvas id="industryChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVE AUDITS -->
+  <div class="card" style="margin-bottom:24px">
+    <h3>Active Audits</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Client</th><th>Industry</th><th>Status</th><th>Days</th><th>Est. Recovery</th><th>Next Action</th><th>Health</th></tr>
+        <tr>
+          <td><strong>Acme Mining Co</strong></td><td>Mining</td>
+          <td><span class="status live">Auditing</span></td><td>3</td><td>$78,000</td>
+          <td>Review draft dispute</td><td class="health"><span class="health-dot green"></span> Green</td>
+        </tr>
+        <tr>
+          <td><strong>Westlog Transport</strong></td><td>Logistics</td>
+          <td><span class="status live">File review</span></td><td>7</td><td>$43,000</td>
+          <td>Upload more bills</td><td class="health"><span class="health-dot amber"></span> Needs attention</td>
+        </tr>
+        <tr>
+          <td><strong>BuildCorp</strong></td><td>Construction</td>
+          <td><span class="status auditing">LOA pending</span></td><td>14</td><td>$22,000</td>
+          <td>Send DocuSign reminder</td><td class="health"><span class="health-dot amber"></span> Needs attention</td>
+        </tr>
+        <tr>
+          <td><strong>Precision Parts</strong></td><td>Manufacturing</td>
+          <td><span class="status live">Dispute filed</span></td><td>21</td><td>$35,000</td>
+          <td>Awaiting Telstra response</td><td class="health"><span class="health-dot green"></span> Green</td>
+        </tr>
+        <tr>
+          <td><strong>State Mining Ltd</strong></td><td>Mining</td>
+          <td><span class="status stalled">Stalled</span></td><td>45</td><td>$120,000</td>
+          <td>Client unresponsive</td><td class="health"><span class="health-dot red"></span> At risk</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="quick-actions" style="margin-bottom:24px">
+    <button onclick="alert('New quote template opened')">📄 Send Quote</button>
+    <button onclick="alert('Follow up on disputes')">📞 Follow Up on Dispute</button>
+    <button onclick="alert('Schedule call')">📅 Schedule Call</button>
+    <button onclick="alert('New client onboarding')">➕ New Client</button>
+  </div>
+
+  <!-- PARTNER LEADERBOARD -->
+  <div class="card">
+    <h3>Partner Leaderboard</h3>
+    <div class="leaderboard">
+      <div class="leaderboard-item"><span class="rank">1</span><span class="name">MSP Solutions</span><span style="color:#64748b;font-size:0.8rem">3 clients · 100% conv</span><span class="rev">$7,200</span></div>
+      <div class="leaderboard-item"><span class="rank">2</span><span class="name">TelcoAudit Partners</span><span style="color:#64748b;font-size:0.8rem">5 clients · 60% conv</span><span class="rev">$6,800</span></div>
+      <div class="leaderboard-item"><span class="rank">3</span><span class="name">Digital Consulting</span><span style="color:#64748b;font-size:0.8rem">2 clients · 100% conv</span><span class="rev">$3,400</span></div>
+      <div class="leaderboard-item"><span class="rank">4</span><span class="name">IT Governance</span><span style="color:#64748b;font-size:0.8rem">2 clients · 50% conv</span><span class="rev">$2,100</span></div>
+      <div class="leaderboard-item"><span class="rank">5</span><span class="name">CloudTel Partners</span><span style="color:#64748b;font-size:0.8rem">1 client · 100% conv</span><span class="rev">$800</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// MRR Chart (6 months)
+new Chart(document.getElementById('mrrChart'), {
+  type: 'line',
+  data: {
+    labels: ['Oct','Nov','Dec','Jan','Feb','Mar'],
+    datasets: [{
+      data: [18000, 22000, 26000, 31000, 35000, 38500],
+      borderColor: '#10b981',
+      backgroundColor: 'rgba(16,185,129,0.08)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 0,
+      borderWidth: 2
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { display: false }, y: { display: false, beginAtZero: true } }
+  }
+});
+
+// Revenue Mix
+new Chart(document.getElementById('mixChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Monitoring ($38.5K)', 'Contingency ($22K)', 'Other ($4K)'],
+    datasets: [{ data: [38500, 22000, 4000], backgroundColor: ['#10b981','#2563eb','#94a3b8'] }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10, padding: 8 } } }
+  }
+});
+
+// Industry breakdown
+new Chart(document.getElementById('industryChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Mining', 'Logistics', 'Construction', 'Manufacturing', 'Other'],
+    datasets: [{
+      data: [18, 11, 8, 5, 5],
+      backgroundColor: ['#3b82f6','#10b981','#f59e0b','#ef4444','#94a3b8'],
+      borderRadius: 4
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+      y: { beginAtZero: true, ticks: { stepSize: 5 } }
+    }
+  }
+});
+</script>
+</body>
+</html>

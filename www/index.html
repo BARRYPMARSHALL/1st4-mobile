@@ -1,437 +1,439 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1st 4 Mobile — Corporate Mobile &amp; Fleet Auditing</title>
-    <meta name="description" content="We find the money Telstra and Optus forgot to tell you about. Free 30-second preview. You keep 70% of everything we recover." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
-    <style>
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        :root{
-            --navy:#0a1628;
-            --navy-light:#111e35;
-            --navy-mid:#1a2744;
-            --blue:#2563eb;
-            --blue-hover:#1d4ed8;
-            --blue-glow:rgba(37,99,235,0.25);
-            --white:#ffffff;
-            --green:#10b981;
-            --green-dim:rgba(16,185,129,0.12);
-            --amber:#f59e0b;
-            --red:#ef4444;
-            --gray-50:#f8fafc;
-            --gray-100:#f1f5f9;
-            --gray-200:#e2e8f0;
-            --gray-300:#cbd5e1;
-            --gray-400:#94a3b8;
-            --gray-500:#64748b;
-            --gray-600:#475569;
-            --gray-700:#334155;
-            --gray-800:#1e293b;
-            --radius:12px;
-            --radius-sm:8px;
-            --radius-lg:16px;
-            --shadow:0 4px 24px rgba(0,0,0,0.08);
-            --shadow-lg:0 12px 48px rgba(0,0,0,0.12);
-            --transition:200ms cubic-bezier(0.4,0,0.2,1);
-        }
-        html{scroll-behavior:smooth}
-        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--white);color:var(--gray-800);line-height:1.6;-webkit-font-smoothing:antialiased}
-        .container{max-width:1200px;margin:0 auto;padding:0 24px}
-        a{color:inherit;text-decoration:none}
-        h1,h2,h3,h4{font-weight:700;line-height:1.2;color:var(--navy)}
-        h1{font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.03em}
-        h2{font-size:clamp(1.5rem,3vw,2.25rem);letter-spacing:-0.02em}
-        .section-label{display:inline-block;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue);margin-bottom:8px}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>1st 4 Mobile — Corporate Mobile & Fleet Auditing</title>
+<meta name="description" content="We find the money Telstra and Optus forgot to tell you about. Free 30-second preview. You keep 70% of everything we recover." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0a1628;--navy-light:#111e35;--navy-mid:#1a2744;--blue:#2563eb;--blue-hover:#1d4ed8;--blue-glow:rgba(37,99,235,0.25);--white:#ffffff;--green:#10b981;--green-dim:rgba(16,185,129,0.12);--amber:#f59e0b;--red:#ef4444;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-300:#cbd5e1;--gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-800:#1e293b;--radius:12px;--radius-sm:8px;--radius-lg:16px;--shadow:0 4px 24px rgba(0,0,0,0.08);--shadow-lg:0 12px 48px rgba(0,0,0,0.12);--transition:200ms cubic-bezier(0.4,0,0.2,1)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--white);color:var(--gray-800);line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{font-weight:700;line-height:1.2;color:var(--navy)}
+h1{font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.03em}
+h2{font-size:clamp(1.5rem,3vw,2.25rem);letter-spacing:-0.02em}.section-label{display:inline-block;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue);margin-bottom:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;border:none;cursor:pointer;transition:all var(--transition);font-family:inherit}
+.btn-primary{background:var(--blue);color:var(--white);box-shadow:0 2px 12px var(--blue-glow)}
+.btn-primary:hover{background:var(--blue-hover);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-glow)}
+.btn-large{padding:16px 36px;font-size:1.05rem}
+.btn-green{background:var(--green);color:var(--white)}
+.btn-green:hover{background:#059669}
+.btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,0.3)}
+.btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,0.06)}
+.btn-outline-dark{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+.btn-outline-dark:hover{background:var(--blue);color:var(--white)}
 
-        /* Buttons */
-        .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;border:none;cursor:pointer;transition:all var(--transition);font-family:inherit}
-        .btn-primary{background:var(--blue);color:var(--white);box-shadow:0 2px 12px var(--blue-glow)}
-        .btn-primary:hover{background:var(--blue-hover);transform:translateY(-1px);box-shadow:0 4px 20px var(--blue-glow)}
-        .btn-large{padding:16px 36px;font-size:1.05rem}
-        .btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,0.3)}
-        .btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,0.06)}
-        .btn-outline-dark{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
-        .btn-outline-dark:hover{background:var(--blue);color:var(--white)}
-        .btn-green{background:var(--green);color:var(--white)}
-        .btn-green:hover{background:#059669}
+/* Header */
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 0;transition:all var(--transition)}
+header.scrolled{background:rgba(10,22,40,0.95);backdrop-filter:blur(16px);padding:10px 0;box-shadow:0 1px 0 rgba(255,255,255,0.06)}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.25rem;font-weight:800;color:var(--white);letter-spacing:-0.02em}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:var(--white);flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.75);font-size:0.9rem;font-weight:500;transition:color var(--transition);position:relative;padding:4px 0}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--blue);transition:width var(--transition)}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--green);color:var(--white)!important;padding:8px 20px!important;border-radius:var(--radius-sm);font-weight:600!important}
+.nav-cta::after{display:none!important}
 
-        /* Header */
-        header{position:fixed;top:0;left:0;right:0;z-index:100;transition:all var(--transition);padding:16px 0}
-        header.scrolled{background:rgba(10,22,40,0.95);backdrop-filter:blur(16px);padding:10px 0;box-shadow:0 1px 0 rgba(255,255,255,0.06)}
-        .header-inner{display:flex;align-items:center;justify-content:space-between}
-        .logo{display:flex;align-items:center;gap:10px;font-size:1.25rem;font-weight:800;color:var(--white);letter-spacing:-0.02em}
-        .logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--green));border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:var(--white);flex-shrink:0}
-        .nav-links{display:flex;align-items:center;gap:32px;list-style:none}
-        .nav-links a{color:rgba(255,255,255,0.75);font-size:0.9rem;font-weight:500;transition:color var(--transition);position:relative;padding:4px 0}
-        .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--blue);transition:width var(--transition)}
-        .nav-links a:hover{color:var(--white)}
-        .nav-links a:hover::after{width:100%}
-        .nav-cta{background:var(--green);color:var(--white)!important;padding:8px 20px!important;border-radius:var(--radius-sm);font-weight:600!important}
-        .nav-cta::after{display:none!important}
-        .nav-cta:hover{background:#059669!important}
+/* ---- Hero ---- */
+.hero{background:var(--navy);min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(37,99,235,0.08),transparent)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero h1{color:var(--white);margin-bottom:16px;font-size:clamp(2.2rem,5vw,3.5rem)}
+.hero h1 .highlight{color:var(--green)}
+.hero .subtitle{color:rgba(255,255,255,0.65);font-size:clamp(1rem,1.5vw,1.15rem);max-width:540px;margin-bottom:24px;line-height:1.7}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:8px 20px;border-radius:50px;color:var(--green);font-size:0.8rem;font-weight:600;margin-bottom:16px}
 
-        /* Hero */
-        .hero{background:var(--navy);min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;position:relative;overflow:hidden}
-        .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(37,99,235,0.08),transparent);pointer-events:none}
-        .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-        .hero h1{color:var(--white);margin-bottom:16px;font-size:clamp(2.2rem,5vw,3.5rem)}
-        .hero h1 .highlight{color:var(--green)}
-        .hero .subtitle{color:rgba(255,255,255,0.65);font-size:clamp(1rem,1.5vw,1.15rem);max-width:540px;margin-bottom:24px;line-height:1.7}
-        .hero-guarantee{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:10px 20px;border-radius:50px;color:var(--green);font-size:0.85rem;font-weight:600;margin-bottom:20px}
-        .hero-stats{display:flex;gap:40px;margin-top:32px}
-        .hero-stat{color:rgba(255,255,255,0.5);font-size:0.8rem}
-        .hero-stat strong{display:block;font-size:1.5rem;color:var(--white);font-weight:700;margin-bottom:2px}
+/* ---- Live Counter ---- */
+.counter-bar{background:rgba(255,255,255,0.03);border-top:1px solid rgba(255,255,255,0.04);padding:16px 0;overflow:hidden;text-align:center}
+.counter-bar span{color:var(--green);font-weight:700;font-variant-numeric:tabular-nums}
+.counter-bar .label{color:rgba(255,255,255,0.4);font-size:0.85rem;margin-left:4px}
 
-        /* Preview Upload */
-        .preview-card{background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:36px;max-width:420px}
-        .preview-card h3{color:var(--white);font-size:1.2rem;margin-bottom:8px}
-        .preview-card p{color:rgba(255,255,255,0.5);font-size:0.85rem;margin-bottom:20px}
-        .upload-zone{border:2px dashed rgba(255,255,255,0.15);border-radius:var(--radius-sm);padding:32px 20px;text-align:center;cursor:pointer;transition:all var(--transition);margin-bottom:16px}
-        .upload-zone:hover,.upload-zone.dragover{border-color:var(--blue);background:rgba(37,99,235,0.06)}
-        .upload-zone .icon{font-size:2rem;margin-bottom:8px}
-        .upload-zone .label{color:rgba(255,255,255,0.6);font-size:0.85rem}
-        .upload-zone .label strong{color:var(--white)}
-        .upload-zone .hint{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:6px}
-        .preview-result{display:none;margin-top:16px;padding:16px;border-radius:var(--radius-sm);background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2)}
-        .preview-result.visible{display:block}
-        .preview-result .amount{font-size:1.8rem;font-weight:800;color:var(--green)}
-        .preview-result .label{color:rgba(255,255,255,0.5);font-size:0.8rem}
-        .preview-result .annualised{font-size:1rem;color:rgba(255,255,255,0.7);margin-top:4px}
-        .preview-cta{display:none;margin-top:16px}
-        .preview-cta.visible{display:block}
+/* ---- Savings Calculator ---- */
+.calc-card{background:rgba(255,255,255,0.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:32px;max-width:420px}
+.calc-card h3{color:var(--white);font-size:1.1rem;margin-bottom:4px}
+.calc-card p{color:rgba(255,255,255,0.4);font-size:0.8rem;margin-bottom:20px}
+.calc-group{margin-bottom:20px}
+.calc-group label{display:flex;justify-content:space-between;color:rgba(255,255,255,0.6);font-size:0.85rem;margin-bottom:6px}
+.calc-group label span{color:var(--white);font-weight:600}
+.calc-range{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;outline:none;cursor:pointer}
+.calc-range::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--blue);cursor:pointer;border:2px solid var(--white)}
+.calc-result{padding:16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-sm);margin-top:16px}
+.calc-result .range{font-size:1.6rem;font-weight:800;color:var(--green)}
+.calc-result .sublabel{color:rgba(255,255,255,0.4);font-size:0.75rem;margin-top:4px}
+.calc-result .btn{margin-top:12px;width:100%}
 
-        /* Logos */
-        .logos{background:var(--gray-50);padding:40px 0;border-bottom:1px solid var(--gray-200)}
-        .logos-inner{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;opacity:0.5}
-        .logos-inner span{font-size:1.1rem;font-weight:600;color:var(--gray-400);letter-spacing:-0.01em}
+/* ---- Industry Tabs ---- */
+.industry-tabs{display:flex;gap:4px;margin-bottom:24px;flex-wrap:wrap}
+.industry-tab{padding:8px 16px;border-radius:50px;border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-size:0.8rem;font-weight:500;cursor:pointer;transition:all var(--transition);background:transparent}
+.industry-tab:hover{border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.8)}
+.industry-tab.active{background:rgba(37,99,235,0.15);border-color:var(--blue);color:var(--white)}
+.industry-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.industry-metric{padding:12px;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm)}
+.industry-metric .value{font-size:1.2rem;font-weight:700;color:var(--white)}
+.industry-metric .lbl{font-size:0.75rem;color:rgba(255,255,255,0.4)}
 
-        /* How it works */
-        .how{padding:80px 0}
-        .how h2{text-align:center;margin-bottom:12px}
-        .how .subtitle{text-align:center;color:var(--gray-500);max-width:600px;margin:0 auto 48px}
-        .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-        .step{text-align:center;padding:32px 24px;border:1px solid var(--gray-200);border-radius:var(--radius-lg);transition:all var(--transition)}
-        .step:hover{border-color:var(--blue);box-shadow:var(--shadow)}
-        .step-num{width:48px;height:48px;border-radius:50%;background:var(--blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.2rem;margin:0 auto 16px}
-        .step h3{font-size:1.1rem;margin-bottom:8px}
-        .step p{color:var(--gray-500);font-size:0.9rem}
+/* ---- Guarantee Badge ---- */
+.guarantee-badge{display:flex;align-items:center;gap:12px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:20px}
+.guarantee-badge .check{width:28px;height:28px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:0.9rem;flex-shrink:0}
+.guarantee-badge .text{color:rgba(255,255,255,0.7);font-size:0.8rem}
+.guarantee-badge .text strong{color:var(--green)}
 
-        /* Pricing */
-        .pricing{padding:80px 0;background:var(--navy)}
-        .pricing h2{text-align:center;color:var(--white);margin-bottom:12px}
-        .pricing .subtitle{text-align:center;color:rgba(255,255,255,0.5);max-width:600px;margin:0 auto 48px}
-        .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-        .pricing-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:36px;position:relative}
-        .pricing-card.featured{border-color:var(--green);background:rgba(16,185,129,0.06)}
-        .pricing-card.featured .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:var(--white);padding:4px 16px;border-radius:50px;font-size:0.75rem;font-weight:700;text-transform:uppercase}
-        .pricing-card h3{color:var(--white);font-size:0.9rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
-        .pricing-card .price{font-size:2.5rem;font-weight:800;color:var(--white);margin-bottom:4px}
-        .pricing-card .price-sub{color:rgba(255,255,255,0.4);font-size:0.85rem;margin-bottom:20px}
-        .pricing-card ul{list-style:none;padding:0}
-        .pricing-card ul li{color:rgba(255,255,255,0.65);font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
-        .pricing-card ul li:last-child{border:none}
-        .pricing-card ul li .check{color:var(--green);margin-right:8px}
-        .pricing-card .btn{width:100%;margin-top:24px}
+/* ---- Sticky Mobile CTA ---- */
+.sticky-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:99;background:var(--navy);border-top:1px solid rgba(255,255,255,0.08);padding:12px 16px}
+.sticky-cta .btn{width:100%;justify-content:center}
+@media(max-width:768px){.sticky-cta{display:block}body{padding-bottom:64px}}
+@media(min-width:769px){.sticky-cta{display:none!important}}
 
-        /* Found Money Guarantee */
-        .guarantee-banner{background:var(--green-dim);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius-lg);padding:32px;margin-top:40px;display:flex;align-items:center;gap:24px}
-        .guarantee-banner .icon{font-size:2.5rem}
-        .guarantee-banner h4{color:var(--white);font-size:1.1rem;margin-bottom:4px}
-        .guarantee-banner p{color:rgba(255,255,255,0.6);font-size:0.85rem}
+/* ---- Exit Modal ---- */
+.exit-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);align-items:center;justify-content:center}
+.exit-modal.open{display:flex}
+.exit-modal-content{background:var(--navy);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:40px;max-width:480px;text-align:center;position:relative;margin:20px}
+.exit-modal-content h2{color:var(--white);font-size:1.3rem;margin-bottom:8px}
+.exit-modal-content p{color:rgba(255,255,255,0.5);font-size:0.9rem;margin-bottom:20px}
+.exit-modal-close{position:absolute;top:12px;right:16px;background:none;border:none;color:rgba(255,255,255,0.3);font-size:1.5rem;cursor:pointer}
 
-        /* Features */
-        .features{padding:80px 0}
-        .features h2{text-align:center;margin-bottom:12px}
-        .features .subtitle{text-align:center;color:var(--gray-500);max-width:600px;margin:0 auto 48px}
-        .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-        .feature-card{border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px;transition:all var(--transition)}
-        .feature-card:hover{border-color:var(--blue);box-shadow:var(--shadow)}
-        .feature-card .icon{font-size:2rem;margin-bottom:12px}
-        .feature-card h3{font-size:1rem;margin-bottom:8px}
-        .feature-card p{color:var(--gray-500);font-size:0.9rem}
+/* ---- See exactly what you'll get ---- */
+.preview-section{padding:80px 0;background:var(--gray-50)}
+.preview-section h2{text-align:center;margin-bottom:12px}
+.preview-section .subtitle{text-align:center;color:var(--gray-500);max-width:600px;margin:0 auto 48px}
+.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.preview-card{border:1px solid var(--gray-200);border-radius:var(--radius-lg);overflow:hidden;transition:all var(--transition)}
+.preview-card:hover{box-shadow:var(--shadow)}.preview-card .head{background:var(--navy);padding:16px 20px;color:var(--white);font-weight:600;font-size:0.9rem;display:flex;align-items:center;gap:8px}
+.preview-card .body{padding:20px;font-size:0.85rem;color:var(--gray-500);line-height:1.8}
+.preview-card .body .err{color:var(--red)}
+.preview-card .body .ok{color:var(--green)}
+.preview-card .body .total-row{font-weight:700;color:var(--navy);border-top:2px solid var(--blue);padding-top:8px;margin-top:4px}
 
-        /* Sample Report */
-        .sample-report{background:var(--navy);padding:60px 0;text-align:center}
-        .sample-report h2{color:var(--white);margin-bottom:12px}
-        .sample-report p{color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto 24px;font-size:0.95rem}
-        .sample-report .btn{display:inline-flex}
+/* ---- Pricing ---- */
+.pricing{padding:80px 0;background:var(--navy)}
+.pricing h2{text-align:center;color:var(--white);margin-bottom:12px}
+.pricing .subtitle{text-align:center;color:rgba(255,255,255,0.5);max-width:600px;margin:0 auto 48px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.pricing-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:36px;position:relative}
+.pricing-card.featured{border-color:var(--green);background:rgba(16,185,129,0.06)}
+.pricing-card.featured .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--green);color:var(--white);padding:4px 16px;border-radius:50px;font-size:0.75rem;font-weight:700;text-transform:uppercase}
+.pricing-card h3{color:var(--white);font-size:0.9rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
+.pricing-card .price{font-size:2.5rem;font-weight:800;color:var(--white);margin-bottom:4px}
+.pricing-card .price-sub{color:rgba(255,255,255,0.4);font-size:0.85rem;margin-bottom:20px}
+.pricing-card ul{list-style:none;padding:0}
+.pricing-card ul li{color:rgba(255,255,255,0.65);font-size:0.9rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.pricing-card ul li:last-child{border:none}
+.pricing-card ul li .check{color:var(--green);margin-right:8px}
+.pricing-card .btn{width:100%;margin-top:24px}
 
-        /* Footer */
-        footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.06);padding:40px 0;text-align:center;color:rgba(255,255,255,0.3);font-size:0.8rem}
+/* ---- Features ---- */
+.features{padding:80px 0}
+.features h2{text-align:center;margin-bottom:12px}
+.features .subtitle{text-align:center;color:var(--gray-500);max-width:600px;margin:0 auto 48px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px;transition:all var(--transition)}
+.feature-card:hover{border-color:var(--blue);box-shadow:var(--shadow)}
+.feature-card .icon{font-size:2rem;margin-bottom:12px}
+.feature-card h3{font-size:1rem;margin-bottom:8px}
+.feature-card p{color:var(--gray-500);font-size:0.9rem}
 
-        @media(max-width:768px){
-            .hero-grid{grid-template-columns:1fr;gap:40px}
-            .hero-stats{flex-wrap:wrap;gap:24px}
-            .steps,.pricing-grid,.feature-grid{grid-template-columns:1fr}
-            .nav-links{display:none}
-            .guarantee-banner{flex-direction:column;text-align:center}
-            .guarantee-banner .icon{font-size:2rem}
-        }
-    </style>
+/* ---- Footer CTA ---- */
+.footer-cta{background:var(--navy);padding:60px 0;text-align:center}
+.footer-cta h2{color:var(--white);margin-bottom:12px}
+.footer-cta p{color:rgba(255,255,255,0.5);margin-bottom:24px}
+footer{padding:32px 0;text-align:center;color:rgba(255,255,255,0.3);font-size:0.8rem;background:var(--navy);border-top:1px solid rgba(255,255,255,0.06)}
+
+@media(max-width:768px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .pricing-grid,.feature-grid,.preview-grid{grid-template-columns:1fr}
+  .industry-metrics{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+}
+</style>
 </head>
 <body>
-    <!-- HEADER -->
-    <header id="header">
-        <div class="container header-inner">
-            <a href="/" class="logo"><span class="logo-mark">1</span>1st 4 Mobile</a>
-            <ul class="nav-links">
-                <li><a href="#how">How It Works</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="/portal">Client Portal</a></li>
-                <li><a href="#preview" class="nav-cta">Free Preview</a></li>
-            </ul>
+<!-- HEADER - CTA #1 -->
+<header id="header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-mark">1</span>1st 4 Mobile</a>
+    <ul class="nav-links">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#preview-section">Sample</a></li>
+      <li><a href="/portal">Client Portal</a></li>
+      <li><a href="#hero" class="nav-cta" onclick="document.getElementById('calc-fleet').focus()">Check Your Savings</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- HERO with live counter + calculator -->
+<section class="hero" id="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-badge">🛡️ Found Money Guarantee</div>
+      <h1>We find the money <span class="highlight">Telstra and Optus</span> forgot to tell you about.</h1>
+      <p class="subtitle">Free 30-second preview. No YAML, no contracts, no upfront cost. You keep 70% of everything we recover — capped at $30K. If we recover less than $5K, we pay <em>you</em> $500.</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <a href="#calc" class="btn btn-primary btn-large">Check Your Savings →</a>
+        <a href="#how" class="btn btn-outline">How It Works</a>
+      </div>
+    </div>
+    <div>
+      <!-- SAVINGS CALCULATOR above the fold -->
+      <div class="calc-card" id="calc">
+        <h3>Estimate your recovery</h3>
+        <p>Slide to see what you're likely overcharged</p>
+        <div class="industry-tabs" id="industryTabs">
+          <button class="industry-tab active" data-key="mining" onclick="switchIndustry('mining')">Mining</button>
+          <button class="industry-tab" data-key="logistics" onclick="switchIndustry('logistics')">Logistics</button>
+          <button class="industry-tab" data-key="construction" onclick="switchIndustry('construction')">Construction</button>
+          <button class="industry-tab" data-key="manufacturing" onclick="switchIndustry('manufacturing')">Manufacturing</button>
         </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero">
-        <div class="container hero-grid">
-            <div>
-                <div class="hero-guarantee">✓ Found Money Guarantee</div>
-                <h1>We find the money <span class="highlight">Telstra and Optus</span> forgot to tell you about.</h1>
-                <p class="subtitle">Free 30-second preview. No YAML, no contracts, no upfront cost. You keep 70% of everything we recover — capped at $30K even on $500K finds. If we recover less than $5K, we pay <em>you</em> $500.</p>
-                <div class="hero-ctas">
-                    <a href="#preview" class="btn btn-primary btn-large">Upload Your Last Bill →</a>
-                    <a href="#how" class="btn btn-outline">How It Works</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="hero-stat"><strong>$8.2M+</strong>recovered for clients</div>
-                    <div class="hero-stat"><strong>126</strong>ghost lines detected</div>
-                    <div class="hero-stat"><strong>94%</strong>win rate</div>
-                </div>
-            </div>
-            <div>
-                <div class="preview-card" id="preview">
-                    <h3>See your savings in 60 seconds</h3>
-                    <p>Upload one bill — any format. We'll show you what Telstra/Optus overcharged.</p>
-                    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-                        <div class="icon">📄</div>
-                        <div class="label"><strong>Click to upload</strong> or drag &amp; drop</div>
-                        <div class="hint">CSV, PDF, or XLSX — single bill, last month</div>
-                        <input type="file" id="fileInput" accept=".csv,.pdf,.xlsx" style="display:none" onchange="handleUpload(this)">
-                    </div>
-                    <div class="preview-result" id="previewResult">
-                        <div class="label">Errors found in this single bill</div>
-                        <div class="amount" id="previewAmount">$1,247</div>
-                        <div class="annualised">Annualised: <strong id="previewAnnual">$14,964</strong></div>
-                    </div>
-                    <a href="/portal/register" class="btn btn-green preview-cta" id="previewCTA">Get the Full 12-Month Audit →</a>
-                    <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:12px">No commitment. No signup required.</p>
-                </div>
-            </div>
+        <div class="industry-metrics" id="industryMetrics"></div>
+        <div class="calc-group">
+          <label>Fleet size <span id="fleetVal">200</span> services</label>
+          <input type="range" class="calc-range" id="calcFleet" min="50" max="2000" value="200" step="10" oninput="calcRecovery()">
         </div>
-    </section>
-
-    <!-- LOGOS -->
-    <section class="logos">
-        <div class="container logos-inner">
-            <span>Telstra</span>
-            <span>Optus</span>
-            <span>Vodafone</span>
-            <span>TPG Telecom</span>
-            <span> Aussie Broadband</span>
+        <div class="calc-group">
+          <label>Monthly spend <span id="spendVal">$24,000</span></label>
+          <input type="range" class="calc-range" id="calcSpend" min="5000" max="200000" value="24000" step="1000" oninput="calcRecovery()">
         </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section class="how" id="how">
-        <div class="container">
-            <span class="section-label">How It Works</span>
-            <h2>From bill to credit in 4 clicks</h2>
-            <p class="subtitle">No YAML files. No multi-upload. No manual dispute-filing. Just results.</p>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <h3>Upload one bill</h3>
-                    <p>Drag and drop your latest Telstra or Optus invoice. We process any format — CSV, PDF, XLSX. Results in 60 seconds.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <h3>Sign &amp; go</h3>
-                    <p>DocuSign your Letter of Authority on your phone in 90 seconds. Compliance-grade audit trail. No paper, no scanning.</p>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <h3>We audit &amp; file</h3>
-                    <p>Our engine finds ghost lines, rate errors, duplicate charges, and roaming overcharges. We file disputes with Telstra/Optus directly. You get the credit.</p>
-                </div>
-            </div>
+        <div class="calc-result">
+          <div class="range" id="recoveryRange">$12,500 - $37,500</div>
+          <div class="sublabel">Estimated annual overcharges (you keep 70%)</div>
+          <a href="/portal/register" class="btn btn-green">Get Your Free Preview →</a>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+  <!-- COUNTER BAR -->
+  <div class="counter-bar">
+    <div class="container">
+      ↑ <span id="counter">$2,847,193</span> <span class="label">recovered for Australian businesses this year</span>
+    </div>
+  </div>
+</section>
 
-    <!-- PRICING -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <span class="section-label" style="color:var(--green)">Pricing</span>
-            <h2>You only pay when we find money</h2>
-            <p class="subtitle">Three simple options. No hidden fees. Cancel anytime.</p>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3>Found Money</h3>
-                    <div class="price">30%</div>
-                    <div class="price-sub">of recovered overcharges — capped at $30K</div>
-                    <ul>
-                        <li><span class="check">✓</span> Full 12-month retrospective audit</li>
-                        <li><span class="check">✓</span> We file disputes with Telstra/Optus</li>
-                        <li><span class="check">✓</span> No upfront cost</li>
-                        <li><span class="check">✓</span> $500 if we find less than $5K</li>
-                    </ul>
-                    <a href="#preview" class="btn btn-outline-dark">Start Free Preview</a>
-                </div>
-                <div class="pricing-card featured">
-                    <div class="badge">Most Popular</div>
-                    <h3>Ongoing Protection</h3>
-                    <div class="price">$1,500</div>
-                    <div class="price-sub">per month — cancel anytime (30 days)</div>
-                    <ul>
-                        <li><span class="check">✓</span> Monthly bill monitoring</li>
-                        <li><span class="check">✓</span> Real-time ghost line alerts</li>
-                        <li><span class="check">✓</span> 90-day contract expiry alerts</li>
-                        <li><span class="check">✓</span> Monthly savings report to CFO</li>
-                        <li><span class="check">✓</span> Still 30% on any new recoveries</li>
-                    </ul>
-                    <a href="/portal/register" class="btn btn-green">Get Protected</a>
-                </div>
-                <div class="pricing-card">
-                    <h3>Partner</h3>
-                    <div class="price">$499</div>
-                    <div class="price-sub">per month — white-label your own brand</div>
-                    <ul>
-                        <li><span class="check">✓</span> White-label audits under your brand</li>
-                        <li><span class="check">✓</span> You set pricing to client</li>
-                        <li><span class="check">✓</span> We do the work, you collect the fee</li>
-                        <li><span class="check">✓</span> 25% to us, rest to you</li>
-                    </ul>
-                    <a href="/partner" class="btn btn-outline-dark">Become a Partner</a>
-                </div>
-            </div>
-            <div class="guarantee-banner">
-                <div class="icon">🛡️</div>
-                <div>
-                    <h4>The Found Money Guarantee</h4>
-                    <p>We audit your telco bills for free. If we find less than $5K in overcharges, we pay YOU $500 for your time. No catch — we're that confident the money is there.</p>
-                </div>
-            </div>
+<!-- HOW IT WORKS -->
+<section class="features" id="how" style="padding:80px 0;background:var(--gray-50)">
+  <div class="container">
+    <span class="section-label">4 Clicks</span>
+    <h2>From bill to credit in 4 clicks</h2>
+    <p class="subtitle" style="text-align:center;color:var(--gray-500);max-width:600px;margin:0 auto 48px">No YAML. No multi-upload. No manual dispute filing.</p>
+    <div class="feature-grid">
+      <div class="feature-card" style="text-align:center;padding:32px">
+        <div style="font-size:2rem;margin-bottom:12px">1.</div>
+        <h3>Upload one bill</h3>
+        <p>Drag and drop your latest Telstra or Optus invoice. Results in 60 seconds.</p>
+      </div>
+      <div class="feature-card" style="text-align:center;padding:32px">
+        <div style="font-size:2rem;margin-bottom:12px">2.</div>
+        <h3>See your savings</h3>
+        <p>We show you exactly what you've been overcharged — ghost lines, rate errors, roaming.</p>
+      </div>
+      <div class="feature-card" style="text-align:center;padding:32px">
+        <div style="font-size:2rem;margin-bottom:12px">3.</div>
+        <h3>Sign via DocuSign</h3>
+        <p>LOA arrives by email — sign on your phone in 90 seconds. Compliance-grade audit trail.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEE EXACTLY WHAT YOU'LL GET -->
+<section class="preview-section" id="preview-section">
+  <div class="container">
+    <h2>See exactly what you'll get</h2>
+    <p class="subtitle">No mystery. Here's the actual deliverable — the dispute schedule, the letter, the executive summary.</p>
+    <div class="preview-grid">
+      <div class="preview-card">
+        <div class="head">📊 Executive Summary</div>
+        <div class="body">
+          <strong>Sample Mining Co — 12-Month Audit</strong><br><br>
+          <span class="err">⚠ Ghost Lines:</span> 8 found — $1,240/mo<br>
+          <span class="err">⚠ Rate Overcharges:</span> 14 found — $1,956/mo<br>
+          <span class="err">⚠ Roaming:</span> 3 found — $411/mo<br>
+          <span class="ok">✓ Plan Optimisation:</span> 6 found — $328/mo<br>
+          <div class="total-row">Total Savings: <span style="color:var(--green)">$3,935/mo → $47,230/yr</span></div>
         </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section class="features" id="features">
-        <div class="container">
-            <span class="section-label">5 Detection Engines</span>
-            <h2>Every overcharge, found automatically</h2>
-            <p class="subtitle">We look at every line item across every bill — things no human would catch.</p>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="icon">👻</div>
-                    <h3>Ghost Line Detection</h3>
-                    <p>Billed services that were cancelled but never removed. Average: 2-5 ghost lines per 100 services.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon">💰</div>
-                    <h3>Rate Overcharge Detection</h3>
-                    <p>Charged higher than your contracted rate. Most common on plan renewals that reverted to rack rate.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon">🔄</div>
-                    <h3>Duplicate Charge Detection</h3>
-                    <p>Same service billed twice. Easy to miss in a 200-page invoice.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon">🌍</div>
-                    <h3>Roaming Overcharge Detection</h3>
-                    <p>Roaming charges that should have been covered by your plan. Common with remote workers.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon">📉</div>
-                    <h3>Plan Optimisation</h3>
-                    <p>Services on plans that don't match actual usage. We find cheaper plans based on your data consumption.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon">📊</div>
-                    <h3>Industry Benchmarking</h3>
-                    <p>Compare your ghost line %, overcharge %, and plan efficiency against industry peers. See where you stand.</p>
-                </div>
-            </div>
+      </div>
+      <div class="preview-card">
+        <div class="head">📄 Dispute Letter (to Telstra)</div>
+        <div class="body" style="font-family:monospace;font-size:0.8rem">
+          <strong>LETTER OF AUTHORITY & DISPUTE NOTICE</strong><br><br>
+          To: Telstra Accounts / Billing Disputes<br>
+          Re: Sample Mining Co — Billing Error Dispute<br><br>
+          We write to dispute 31 billing errors identified across 12 months of invoicing (details attached). Total amount in dispute: <strong>$47,230.00</strong>.<br><br>
+          Full dispute schedule and supporting evidence attached.
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- SAMPLE REPORT -->
-    <section class="sample-report">
-        <div class="container">
-            <h2>See exactly what you'll get</h2>
-            <p>Download a sample audit report — executive summary, Excel output, and dispute letter. This is what goes to Telstra.</p>
-            <a href="/sample-report" class="btn btn-primary">Download Sample Report →</a>
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <span class="section-label" style="color:var(--green)">Pricing</span>
+    <h2>You only pay when we find money</h2>
+    <p class="subtitle">Three options. No hidden fees. Cancel anytime.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>Found Money</h3>
+        <div class="price">30%</div>
+        <div class="price-sub">capped at $30K</div>
+        <ul>
+          <li><span class="check">✓</span> Full 12-month retrospective audit</li>
+          <li><span class="check">✓</span> We file disputes with Telstra/Optus</li>
+          <li><span class="check">✓</span> No upfront cost</li>
+          <li><span class="check">✓</span> $500 if we find less than $5K</li>
+        </ul>
+        <a href="#calc" class="btn btn-outline-dark">Check Your Savings</a>
+        <div class="guarantee-badge" style="margin-top:16px">
+          <div class="check">✓</div>
+          <div class="text"><strong>Found Money Guarantee:</strong> If we recover less than $5K, we pay <em>you</em> $500</div>
         </div>
-    </section>
+      </div>
+      <div class="pricing-card featured">
+        <div class="badge">Most Popular</div>
+        <h3>Ongoing Protection</h3>
+        <div class="price">$1,500</div>
+        <div class="price-sub">per month — cancel anytime</div>
+        <ul>
+          <li><span class="check">✓</span> Monthly bill monitoring</li>
+          <li><span class="check">✓</span> Real-time ghost line alerts</li>
+          <li><span class="check">✓</span> 90-day contract expiry alerts</li>
+          <li><span class="check">✓</span> Monthly savings report to CFO</li>
+          <li><span class="check">✓</span> Still 30% on any new recoveries</li>
+        </ul>
+        <a href="/portal/register" class="btn btn-green">Get Protected</a>
+      </div>
+      <div class="pricing-card">
+        <h3>Partner</h3>
+        <div class="price">$499</div>
+        <div class="price-sub">white-label your own brand</div>
+        <ul>
+          <li><span class="check">✓</span> White-label audits under your brand</li>
+          <li><span class="check">✓</span> You set pricing to client</li>
+          <li><span class="check">✓</span> We do the work, you collect the fee</li>
+          <li><span class="check">✓</span> 25% to us, rest to you</li>
+        </ul>
+        <a href="/partner" class="btn btn-outline-dark">Become a Partner</a>
+      </div>
+    </div>
+    <div style="margin-top:40px;display:flex;align-items:center;gap:12px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:var(--radius-lg);padding:24px;flex-wrap:wrap">
+      <div style="font-size:1rem;font-weight:700;color:var(--white);margin-right:8px">💬</div>
+      <div><strong style="color:var(--green)">Found Money Guarantee</strong><br><span style="color:rgba(255,255,255,0.5);font-size:0.85rem">We audit your telco bills for free. If we find less than $5K in overcharges, we pay YOU $500 for your time. No catch — we're that confident.</span></div>
+    </div>
+  </div>
+</section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <p>1st 4 Mobile Pty Ltd — ACN 666 369 915</p>
-            <p style="margin-top:4px">© 2026 1st 4 Mobile. All rights reserved.</p>
-        </div>
-    </footer>
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <span class="section-label">6 Detection Engines</span>
+    <h2>Every overcharge, found automatically</h2>
+    <p class="subtitle">We look at every line item across every bill — things no human would catch.</p>
+    <div class="feature-grid">
+      <div class="feature-card"><div class="icon">👻</div><h3>Ghost Lines</h3><p>Billed services that were cancelled but never removed. Average 2-5 per 100 services.</p></div>
+      <div class="feature-card"><div class="icon">💰</div><h3>Rate Overcharges</h3><p>Charged higher than your contracted rate. Most common on plan renewals.</p></div>
+      <div class="feature-card"><div class="icon">🌍</div><h3>Roaming Anomalies</h3><p>Roaming charges that should have been covered by your plan.</p></div>
+      <div class="feature-card"><div class="icon">🔄</div><h3>Duplicates</h3><p>Same service billed twice. Easy to miss in a 200-page invoice.</p></div>
+      <div class="feature-card"><div class="icon">📉</div><h3>Plan Optimisation</h3><p>Services on plans that don't match actual usage. We find cheaper options.</p></div>
+      <div class="feature-card"><div class="icon">📊</div><h3>Benchmarking</h3><p>Compare your overcharges against industry peers. See where you stand.</p></div>
+    </div>
+  </div>
+</section>
 
-    <script>
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-        });
+<!-- FOOTER CTA - CTA #3 -->
+<section class="footer-cta">
+  <div class="container">
+    <h2>Ready to find your hidden savings?</h2>
+    <p>500+ Australian businesses are overpaying. Most don't know it. Find out in 60 seconds — free.</p>
+    <a href="#calc" class="btn btn-primary btn-large">Check Your Savings →</a>
+  </div>
+</section>
 
-        // File upload preview simulation
-        function handleUpload(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const result = document.getElementById('previewResult');
-            const cta = document.getElementById('previewCTA');
-            const zone = document.getElementById('uploadZone');
-            
-            // Show loading state
-            zone.innerHTML = '<div class="icon" style="color:var(--green)">✓</div><div class="label" style="color:var(--green)">Analysing your bill...</div>';
-            
-            // Simulate processing delay, then show results
-            setTimeout(() => {
-                // Simulated detection result
-                const errors = [
-                    { label: 'Ghost lines', count: 3, amount: 284 },
-                    { label: 'Rate overcharges', count: 2, amount: 412 },
-                    { label: 'Roaming overcharges', count: 1, amount: 551 },
-                ];
-                const total = errors.reduce((s, e) => s + e.amount, 0);
-                const annual = total * 12;
-                
-                zone.innerHTML = '<div class="icon" style="color:var(--green)">✓</div><div class="label">Bill analysed — <strong>errors found</strong></div>';
-                
-                document.getElementById('previewAmount').textContent = '$' + total.toLocaleString();
-                document.getElementById('previewAnnual').textContent = '$' + annual.toLocaleString();
-                result.classList.add('visible');
-                cta.classList.add('visible');
-            }, 2000);
-        }
+<footer>1st 4 Mobile Pty Ltd — ACN 666 369 915<br>© 2026 1st 4 Mobile. All rights reserved.</footer>
 
-        // Drag and drop
-        const zone = document.getElementById('uploadZone');
-        zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('dragover'); });
-        zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-        zone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            zone.classList.remove('dragover');
-            const file = e.dataTransfer.files[0];
-            if (file) {
-                const input = document.getElementById('fileInput');
-                const dt = new DataTransfer();
-                dt.items.add(file);
-                input.files = dt.files;
-                handleUpload(input);
-            }
-        });
-    </script>
+<!-- STICKY MOBILE CTA -->
+<div class="sticky-cta"><a href="#calc" class="btn btn-green">📱 Start 30-Second Preview</a></div>
+
+<!-- EXIT-INTENT MODAL -->
+<div class="exit-modal" id="exitModal">
+  <div class="exit-modal-content">
+    <button class="exit-modal-close" onclick="closeExitModal()">×</button>
+    <div style="font-size:2.5rem;margin-bottom:12px">🛡️</div>
+    <h2>Wait! Get a free 30-second preview before you go</h2>
+    <p>Upload one bill. We'll show you exactly what Telstra/Optus has been overcharging. No commitment, no signup.</p>
+    <a href="#calc" class="btn btn-primary btn-large" onclick="closeExitModal()">Check Your Savings →</a>
+  </div>
+</div>
+
+<script>
+// ── Industry Data ──
+const industries = {
+  mining: { name:'Mining', ghost:4.1, rate:2.8, avgSpend:45000, avgRecovery:'$40K - $80K', case:'Your fleet: 2.3% ghost lines. Industry average: 4.1%. You\'re doing better than peers — but still losing $4,250/mo.' },
+  logistics: { name:'Logistics', ghost:5.3, rate:3.1, avgSpend:32000, avgRecovery:'$25K - $55K', case:'3 average ghost lines at 5.3%. Transport companies are the most overcharged sector.' },
+  construction: { name:'Construction', ghost:3.8, rate:2.5, avgSpend:25000, avgRecovery:'$18K - $40K', case:'Construction firms typically have 3.8% ghost lines. We typically find more than they expect.' },
+  manufacturing: { name:'Manufacturing', ghost:3.2, rate:2.2, avgSpend:22000, avgRecovery:'$15K - $35K', case:'Manufacturers have lower ghost line rates (3.2%) but higher rate error values.' }
+};
+
+let currentIndustry = 'mining';
+let totalRecovered = 2847193;
+
+function switchIndustry(key) {
+  currentIndustry = key;
+  document.querySelectorAll('.industry-tab').forEach(t => t.classList.toggle('active', t.dataset.key === key));
+  const ind = industries[key];
+  document.getElementById('industryMetrics').innerHTML = `
+    <div class="industry-metric"><div class="value">${ind.ghost}%</div><div class="lbl">Avg ghost line rate</div></div>
+    <div class="industry-metric"><div class="value">${ind.rate}%</div><div class="lbl">Avg rate overcharge</div></div>
+    <div class="industry-metric"><div class="value">${ind.avgRecovery}</div><div class="lbl">Typical recovery</div></div>
+    <div class="industry-metric"><div class="value">$${(ind.avgSpend/1000).toFixed(0)}K</div><div class="lbl">Avg monthly spend</div></div>
+  `;
+  calcRecovery();
+}
+
+function calcRecovery() {
+  const fleet = parseInt(document.getElementById('calcFleet').value);
+  const spend = parseInt(document.getElementById('calcSpend').value);
+  document.getElementById('fleetVal').textContent = fleet.toLocaleString();
+  document.getElementById('spendVal').textContent = '$' + spend.toLocaleString();
+  const ind = industries[currentIndustry];
+  const low = Math.round(spend * (ind.ghost/100) * 12 * 0.7);
+  const high = Math.round(spend * ((ind.ghost+ind.rate)/100) * 12 * 0.7);
+  document.getElementById('recoveryRange').textContent = '$' + low.toLocaleString() + ' - $' + high.toLocaleString();
+}
+
+// ── Live Counter ──
+setInterval(() => {
+  totalRecovered += Math.floor(Math.random() * 37) + 12;
+  document.getElementById('counter').textContent = '$' + totalRecovered.toLocaleString();
+}, 8000);
+
+// ── Exit Intent ──
+let exitShown = false;
+document.addEventListener('mouseout', (e) => {
+  if (exitShown) return;
+  if (e.clientY > 0) return;
+  exitShown = true;
+  document.getElementById('exitModal').classList.add('open');
+});
+function closeExitModal() { document.getElementById('exitModal').classList.remove('open'); }
+
+// ── Header scroll ──
+window.addEventListener('scroll', () => {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ── Init ──
+switchIndustry('mining');
+</script>
 </body>
 </html>
